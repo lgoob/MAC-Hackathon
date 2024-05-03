@@ -3,8 +3,8 @@ import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import Home from "./pages/Home";
+import Whiteboard from "./pages/Whiteboard";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-
 
 function App() {
   return (
@@ -12,7 +12,8 @@ function App() {
       <div>
         <Router>
           <Routes>
-          <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/Whiteboard" element={<Whiteboard />} />
           </Routes>
         </Router>
       </div>
