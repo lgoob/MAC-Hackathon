@@ -39,6 +39,7 @@ const DrawingCanvas = () => {
           ctx.beginPath();
           ctx.arc(x, y, size / 2, 0, 2 * Math.PI);
           ctx.fill();
+          setSize(20);
 
           // Remove erased stroke from strokes array
           strokes = strokes.filter((stroke) => {
@@ -53,6 +54,7 @@ const DrawingCanvas = () => {
           // Update localStorage immediately
           localStorage.setItem("strokes", JSON.stringify(strokes));
         } else {
+          setSize(10);
           ctx.fillStyle = color;
           ctx.beginPath();
           ctx.arc(x, y, size / 2, 0, 2 * Math.PI);
@@ -77,19 +79,27 @@ const DrawingCanvas = () => {
   }, [color, size, isErasing]);
 
   const clearCanvas = () => {
+    event.preventDefault();
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+    // Use canvas background color for eraser
+    const eraserColor = canvas.style.backgroundColor || "white";
+    ctx.fillStyle = eraserColor;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
     localStorage.removeItem("strokes");
   };
+  
 
   return (
     <div style={{ border: "1px solid black", display: "inline-block" }}>
       <canvas
         ref={canvasRef}
         id="my-canvas"
-        width={1000}
-        height={1000}
+        width={1000} //Customisable Width
+        height={1000} //Customizable Height
         style={{ border: "1px solid black" }}
       ></canvas>
       <button onClick={() => setIsErasing(!isErasing)}>Toggle Eraser</button>
