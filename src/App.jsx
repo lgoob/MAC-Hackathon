@@ -19,34 +19,27 @@ function App() {
     }
 
     // Function to add a new note with the chosen type
-    function addNote() {
-      console.log("adding a note");
-        if (chosenType) {
-            // Create a new note object with the chosen type
-            const newNote = {
-                id: Date.now(),
-                type: chosenType,
-            };
-            // Update the state with the new note
-            setNotes((prevNotes) => [...prevNotes, newNote]);
-
-            // Reset chosen type and close the popup
-            setChosenType(null);
-            closeStickyNoteChoice();
-        }
+    function addNote(type) {
+        // Create a new note object with the chosen type
+        const newNote = {
+            id: Date.now(),
+            type,
+        };
+        // Update the state with the new note
+        setNotes((prevNotes) => [...prevNotes, newNote]);
+        // Close the popup
+        closeStickyNoteChoice();
     }
 
     // Handlers for different types of notes
     function handleTaskNote() {
-      console.log("adding a task list note");
         setChosenType("task");
-        addNote();
+        addNote("task");
     }
 
     function handleFreeTextNote() {
-      console.log("adding a free text sticky note");
         setChosenType("freeText");
-        addNote();
+        addNote("freeText");
     }
 
     // Function to remove a note by its ID
