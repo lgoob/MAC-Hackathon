@@ -1,0 +1,60 @@
+/* Style the sticky note */
+
+/* Create note button */
+.sticky-btn {
+    padding: 10px;
+    background: blue;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+}
+.sticky-btn:hover {
+    background: dodgerblue;
+}
+
+/* Sticky note styling */
+.sticky-note {
+    width: 300px;
+    position: absolute;
+    top: 30px;
+    left: 50px;
+}
+
+.sticky-note-title {
+  background-color: #feff9c;
+  border: none;
+}
+
+.sticky-note-header {
+    background: #feff9c;
+    color: black;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: move;
+}
+
+.sticky-note-body {
+    outline: none;
+    width: 100%;
+    padding: 10px;
+    height: 250px;
+    resize: none;
+    border: none;
+    background-color: #feff9c;
+}
+
+.close {
+    width: 35px;
+    height: 35px;
+    font-size: large;
+    border-radius: 50%;
+    display: grid;
+    place-content: center;
+    padding-bottom: 5px;
+    cursor: pointer;
+}
+.close:hover {
+    background-color: #e0e27b;
+}
