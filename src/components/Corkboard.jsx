@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "./tailwind.css";
 import Sample from "../pictures/sample_image.jpeg";
 import { HiOutlinePlusCircle } from "react-icons/hi";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { IoClose } from "react-icons/io5";
 
 const widgetOptions = [
   { id: 1, image: Sample },
@@ -41,38 +43,40 @@ const Corkboard = () => {
 
   return (
     <div className="bg-yellow-900 p-4 w-96 h-screen">
-      <div className="grid grid-cols-2 grid-rows-4 h-full gap-x-4 ">
+      <div className="grid grid-cols-2 grid-rows-4 h-full gap-x-4">
         {widgets.map((widget, index) => (
           <div
             key={index}
-            className={`bg-yellow-50 opacity-20 hover:opacity-50 transition-all rounded-xl shadow-lg cursor-pointer ${
+            className={`bg-yellow-50 rounded-xl shadow-lg cursor-pointer relative ${
               index === 2
-                ? "col-span-2 w-full aspect-video"
+                ? "col-span-2 aspect-video"
                 : "col-span-1 row-span-1 aspect-square"
+            } ${
+              widget
+                ? "opacity-100"
+                : "opacity-50 hover:opacity-75 transition-all"
             }`}
             onClick={() => openWidgetSelector(index)}
           >
             {widget ? (
-              <div>
+              <div className="absolute inset-0">
                 <img
                   src={widget.image}
                   alt={`Widget ${index}`}
-                  className="w-full h-full"
+                  className="w-full h-full object-cover rounded-xl"
                 />
-                <button
-                  className="mt-2 bg-red-500 text-white px-2 py-1 rounded"
+                <IoClose
+                  className="absolute top-2 size-8 right-2 text-red-700 bg-white border-2 border-yellow-900 rounded-full transition-all p-1 rounded-2xl cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteWidget(index);
                   }}
-                >
-                  Delete
-                </button>
+                />
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center h-full">
-                <HiOutlinePlusCircle className="text-yellow-900 size-10" />
-                <p>New widget</p>
+                <HiOutlinePlusCircle className="text-yellow-900 h-10 w-10" />
+                <p className="text-yellow-900">New widget</p>
               </div>
             )}
           </div>
