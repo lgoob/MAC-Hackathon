@@ -1,17 +1,11 @@
 import React, { useRef, useEffect } from "react";
 
-//Thanks Indian Man from Youtube!
-
-//Canvas Creation
+// Canvas Creation
 const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
   const canvasRef = useRef(null);
 
-
-
   useEffect(() => {
     const canvas = canvasRef.current;
-
-    //cxt == context
     const ctx = canvas.getContext("2d");
 
     // Set white background
@@ -52,14 +46,19 @@ const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
   };
 
   return (
-    <div style={{ border: "1px solid black", display: "inline-block" }}>
+    <div>
       <canvas
         ref={canvasRef}
-        width={1250}
+        width={1600}
         height={1000}
         style={{ border: "1px solid black" }}
       ></canvas>
-      <button onClick={clearCanvas}>Clear your masterpiece</button>
+      <button
+        onClick={clearCanvas}
+        className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 mt-2 rounded"
+      >
+        Clear Canvas
+      </button>
     </div>
   );
 };
