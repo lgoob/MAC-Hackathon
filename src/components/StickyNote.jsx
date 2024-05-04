@@ -106,40 +106,35 @@ function StickyNote({ onClose, type }) {
               key={task.id}
               className="flex items-center my-3 hover:bg-yellow-200 transition-all py-2 px-4 rounded-xl"
             >
-              <label className="inline-flex items-center">
+              <label className="inline-flex items-center flex-1">
                 <input
                   type="checkbox"
                   checked={task.completed}
                   onChange={() => toggleTaskCompletion(task.id)}
                   className="form-checkbox h-5 w-5 text-blue-600 transition duration-150 ease-in-out"
                 />
-                <span className="ml-2 text-gray-700">
-                  {editingTaskId === task.id ? (
-                    <input
-                      type="text"
-                      value={task.text}
-                      onChange={handleInputChange}
-                      onBlur={finishEditingTask}
-                      className="flex-1 text-lg bg-transparent focus:outline-none"
-                      autoFocus
-                    />
-                  ) : (
-                    <span
-                      style={{
-                        textDecoration: task.completed
-                          ? "line-through"
-                          : "none",
-                      }}
-                      onClick={() => startEditingTask(task.id)}
-                      className="flex-1 text-lg cursor-pointer"
-                    >
-                      {task.text}
-                    </span>
-                  )}
-                </span>
+                {editingTaskId === task.id ? (
+                  <input
+                    type="text"
+                    value={task.text}
+                    onChange={handleInputChange}
+                    onBlur={finishEditingTask}
+                    className="flex-1 ml-2 text-lg bg-transparent focus:outline-none"
+                  />
+                ) : (
+                  <span
+                    style={{
+                      textDecoration: task.completed ? "line-through" : "none",
+                    }}
+                    onClick={() => startEditingTask(task.id)}
+                    className="flex-1 ml-2 text-lg cursor-pointer"
+                  >
+                    {task.text}
+                  </span>
+                )}
               </label>
               <button
-                className="text-red-400 hover:text-red-500 transition-all focus:outline-none ml-auto"
+                className="text-red-400 hover:text-red-500 transition-all focus:outline-none ml-2"
                 onClick={() => removeTask(task.id)}
               >
                 <FaRegTrashAlt />
