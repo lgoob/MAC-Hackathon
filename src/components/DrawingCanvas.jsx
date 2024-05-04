@@ -55,7 +55,7 @@ const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
     <div style={{ border: "1px solid black", display: "inline-block" }}>
       <canvas
         ref={canvasRef}
-        width={1000}
+        width={1250}
         height={1000}
         style={{ border: "1px solid black" }}
       ></canvas>
