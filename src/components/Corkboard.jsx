@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./tailwind.css";
 import Sample from "../pictures/sample_image.jpeg";
-// Placeholder images for widget choices
+
 const widgetOptions = [
   { id: 1, image: Sample },
   { id: 2, image: Sample },
@@ -9,10 +9,17 @@ const widgetOptions = [
 ];
 
 const Corkboard = () => {
-  const [widgets, setWidgets] = useState(Array(3).fill(null));
+  const [widgets, setWidgets] = useState(() => {
+    const savedWidgets = localStorage.getItem('widgets');
+    return savedWidgets ? JSON.parse(savedWidgets) : Array(3).fill(null);
+  });
+
   const [showSelector, setShowSelector] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [previewWidget, setPreviewWidget] = useState(null);
+
+  useEffect(() => {
+    localStorage.setItem('widgets', JSON.stringify(widgets));
+  }, [widgets]);
 
   const openWidgetSelector = (index) => {
     setSelectedSlot(index);
@@ -26,11 +33,24 @@ const Corkboard = () => {
     setShowSelector(false);
   };
 
+  const deleteWidget = (index) => {
+    const newWidgets = [...widgets];
+    newWidgets[index] = null;
+    setWidgets(newWidgets);
+  };
+
   return (
     <div className="corkboard-container">
       {widgets.map((widget, index) => (
         <div key={index} className={`slot ${index === 2 ? 'full-width' : ''}`} onClick={() => openWidgetSelector(index)}>
-          {widget && <img src={widget.image} alt={`Widget ${index}`} style={{ width: '100%', height: '100%' }} />}
+          {widget ? (
+            <div>
+              <img src={widget.image} alt={`Widget ${index}`} style={{ width: '100%', height: '100%' }} />
+              <button onClick={(e) => { e.stopPropagation(); deleteWidget(index); }}>Delete</button>
+            </div>
+          ) : (
+            <p>Click to add widget</p>
+          )}
         </div>
       ))}
 
@@ -38,17 +58,11 @@ const Corkboard = () => {
         <div className="widget-selector">
           <h4>Select a Widget:</h4>
           {widgetOptions.map(option => (
-            <div key={option.id} onMouseEnter={() => setPreviewWidget(option)}
-                 onClick={() => addWidget(option)}>
+            <div key={option.id} onClick={() => addWidget(option)}>
               <img src={option.image} alt={`Select ${option.id}`} />
             </div>
           ))}
           <button onClick={() => setShowSelector(false)}>Close</button>
-          {previewWidget && (
-            <div className="preview">
-              <img src={previewWidget.image} alt="Preview" style={{ width: '100px', height: 'auto' }} />
-            </div>
-          )}
         </div>
       )}
     </div>
