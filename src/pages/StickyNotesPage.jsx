@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import "./App.css";
-import StickyNote from "./components/StickyNote";
-import StickyNoteChoice from "./components/StickyNoteChoice";
+import StickyNote from "../components/StickyNote";
+import StickyNoteChoice from "../components/StickyNoteChoice";
 
 function StickyNotesPage() {
     const [notes, setNotes] = useState([]);
