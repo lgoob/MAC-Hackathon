@@ -1,0 +1,43 @@
+/* Styles for the overlay (background) */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dim background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Styles for the popup form */
+.popup-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 400px;
+    width: 90%; /* Responsive width */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    text-align: center; /* Center the text */
+    position: relative; /* Allows positioning of the close button */
+}
+
+/* Styles for the close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Styles for form elements to center text */
+.popup-form input,
+.popup-form button {
+    display: block;
+    margin: 10px auto; /* Center form elements */
+}
