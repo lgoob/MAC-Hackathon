@@ -58,7 +58,7 @@ const clearWhiteboard = () => {
   
 
   return (
-    <div className="bg-whiteboards bg-cover bg-center bg-no-repeat h-screen w-full relative">
+    <div className="bg-whiteboards bg-cover bg-center bg-no-repeat min-h-screen w-full relative">
       {/* "Lock in" button in the top left corner */}
       <Link to="/">
           <button type="button"
@@ -83,7 +83,7 @@ const clearWhiteboard = () => {
                 <p className="text-white drop-shadow-[0_1.2px_10px_rgba(0,0,0,0.8)] text-3xl font-semibold text-center">No whiteboards available.</p>
                 <button
                     onClick={addWhiteboard}
-                    className="px-8 py-4 m-5 bg-blue-700 text-white font-bold rounded-lg shadow-lg hover:bg-blue-800 transition duration-200 ease-in-out text-2xl"
+                    className="px-8 py-4 m-5 bg-orange-800 text-white font-bold rounded-lg shadow-lg hover:bg-orange-900 transition duration-200 ease-in-out text-2xl"
                 >
                     Add your first board! +
                 </button>
@@ -97,18 +97,20 @@ const clearWhiteboard = () => {
               <h1>Your boards</h1>
           </div>
           <div className="flex items-center space-x-4">
-              <button onClick={addWhiteboard} className="px-8 py-4 m-5 bg-blue-700 text-white font-bold rounded-lg shadow-lg hover:bg-blue-800 transition duration-200 ease-in-out text-xl">Add A Board +</button>
-              <button onClick={clearWhiteboard} className="flex items-center space-x-2 text-xl px-8 py-4 bg-blue-700 text-white font-bold rounded-lg shadow-lg hover:bg-blue-800 transition duration-200 ease-in-out">
+              <button onClick={addWhiteboard} className="px-8 py-4 m-5 bg-amber-900 text-white font-bold rounded-lg shadow-lg hover:bg-amber-950 transition duration-200 ease-in-out text-xl">Add A Board +</button>
+              <button onClick={clearWhiteboard} className="flex items-center space-x-2 text-xl px-8 py-4 bg-amber-900 text-white font-bold rounded-lg shadow-lg hover:bg-amber-950 transition duration-200 ease-in-out">
                   <span>Delete A Board</span>
                   <FaRegTrashAlt />
               </button>
           </div>
 
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
+          <div className="flex flex-wrap justify-center">
               {whiteboards.map((board) => (
-                  <WhiteboardTile key={board.id} id={board.id} onRemove={() => removeWhiteboard(board.id)} />
+                  <WhiteboardTile key={board.id} id={board.id} />
               ))}
           </div>
+
+
         </div>
       )}
     </div>
