@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "./tailwind.css";
-import Sample from "./sample.png"
+import Sample from "../pictures/sample_image.jpeg";
 // Placeholder images for widget choices
 const widgetOptions = [
   { id: 1, image: Sample },
