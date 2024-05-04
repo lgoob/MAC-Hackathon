@@ -7,6 +7,7 @@ module.exports = {
     extend: {     
       backgroundImage: {
         'hero': "url('./pictures/Cafe (Night).jpg')",
+        'whiteboards': "url('./pictures/whiteboardsbackground.png')"
       },
     },
   },
