@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./tailwind.css";
 import Sample from "../pictures/sample_image.jpeg";
+import { HiOutlinePlusCircle } from "react-icons/hi";
 
 const widgetOptions = [
   { id: 1, image: Sample },
@@ -39,13 +40,15 @@ const Corkboard = () => {
   };
 
   return (
-    <div className="bg-yellow-900 p-4 w-1/5 h-screen">
-      <div className="grid grid-cols-2 gap-2 grid-rows-4 h-full">
+    <div className="bg-yellow-900 p-4 w-96 h-screen">
+      <div className="grid grid-cols-2 grid-rows-4 h-full gap-x-4 ">
         {widgets.map((widget, index) => (
           <div
             key={index}
-            className={`bg-white p-2 rounded-lg shadow-md cursor-pointer ${
-              index === 2 ? "col-span-2" : "col-span-1 row-span-1"
+            className={`bg-yellow-50 opacity-20 hover:opacity-50 transition-all rounded-xl shadow-lg cursor-pointer ${
+              index === 2
+                ? "col-span-2 w-full aspect-video"
+                : "col-span-1 row-span-1 aspect-square"
             }`}
             onClick={() => openWidgetSelector(index)}
           >
@@ -67,7 +70,10 @@ const Corkboard = () => {
                 </button>
               </div>
             ) : (
-              <p className="text-gray-500">Click to add widget</p>
+              <div className="flex flex-col items-center justify-center h-full">
+                <HiOutlinePlusCircle className="text-yellow-900 size-10" />
+                <p>New widget</p>
+              </div>
             )}
           </div>
         ))}
