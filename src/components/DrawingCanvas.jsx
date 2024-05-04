@@ -1,8 +1,9 @@
+// DrawingCanvas.jsx
 import React, { useRef, useEffect, useState } from "react";
+import Pens from "./Utility Bar/Pens";
 
-const DrawingCanvas = () => {
+const DrawingCanvas = ({ color }) => {
   const canvasRef = useRef(null);
-  const [color, setColor] = useState("black");
   const [size, setSize] = useState(10);
   const [isErasing, setIsErasing] = useState(false); // Track erasing mode
 
@@ -55,7 +56,7 @@ const DrawingCanvas = () => {
           localStorage.setItem("strokes", JSON.stringify(strokes));
         } else {
           setSize(10);
-          ctx.fillStyle = color;
+          ctx.fillStyle = color; // Use the color prop
           ctx.beginPath();
           ctx.arc(x, y, size / 2, 0, 2 * Math.PI);
           ctx.fill();
@@ -91,7 +92,6 @@ const DrawingCanvas = () => {
   
     localStorage.removeItem("strokes");
   };
-  
 
   return (
     <div style={{ border: "1px solid black", display: "inline-block" }}>
@@ -109,3 +109,5 @@ const DrawingCanvas = () => {
 };
 
 export default DrawingCanvas;
+
+
