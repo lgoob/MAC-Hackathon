@@ -1,10 +1,17 @@
 import React, { useRef, useEffect } from "react";
 
+//Thanks Indian Man from Youtube!
+
+//Canvas Creation
 const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
   const canvasRef = useRef(null);
 
+
+
   useEffect(() => {
     const canvas = canvasRef.current;
+
+    //cxt == context
     const ctx = canvas.getContext("2d");
 
     // Set white background
