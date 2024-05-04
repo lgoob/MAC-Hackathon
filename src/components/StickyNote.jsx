@@ -1,118 +1,24 @@
 import { useState, useRef } from "react";
-import '../App.css';
+import '../stickyNote.css';
 
-// function StickyNote({ onClose, type }) {
-//     const [allowMove, setAllowMove] = useState(false);
-//     const [tasks, setTasks] = useState([]); // State to track tasks
-//     const [newTask, setNewTask] = useState(""); // State to track new task input
-//     const stickyNoteRef = useRef();
-
-//     const [dx, setDx] = useState(0)
-//     const [dy, setDy] = useState(0)
-
-//     function handleMouseDown(e) {
-//         setAllowMove(true)
-//         const dimensions = stickyNoteRef.current.getBoundingClientRect()
-//         setDx(e.clientX - dimensions.x)
-//         setDy(e.clientY - dimensions.y)
-//     }
-//     function handleMouseMove(e) {
-//         if (allowMove) {
-//             // move the sticky note
-//             console.log("allow moving - ", e.clientX, dx, e.clientY, dy)
-//             const x = e.clientX - dx
-//             const y = e.clientY - dy
-//             console.log("inside mouse move", x, y)
-//             stickyNoteRef.current.style.left = x + "px"
-//             stickyNoteRef.current.style.top = y + "px"
-//         }
-//     }
-//     function handleMouseUp() {
-//         setAllowMove(false)
-//     }
-
-//     // handle task related behaviour
-//     function handleNewTaskChange(e) {
-//         setNewTask(e.target.value);
-//     }
-
-//     function addTask() {
-//         if (newTask.trim()) {
-//             setTasks([...tasks, { id: Date.now(), text: newTask, completed: false }]);
-//             setNewTask("");
-//         }
-//     }
-
-//     function toggleTaskCompletion(taskId) {
-//         setTasks(tasks.map((task) => 
-//             task.id === taskId ? { ...task, completed: !task.completed } : task
-//         ));
-//     }
-
-//     function removeTask(taskId) {
-//         setTasks(tasks.filter((task) => task.id !== taskId));
-//     }
-
-//     return (
-//         <div className="sticky-note" ref={stickyNoteRef}>
-//             <div
-//                 className="sticky-note-header"
-//                 onMouseDown={handleMouseDown}
-//                 onMouseMove={handleMouseMove}
-//                 onMouseUp={handleMouseUp}
-//             >
-//                 <input className="sticky-note-title" placeholder="Enter Note Title" />
-//                 <div className="close" onClick={onClose}>
-//                     &times;
-//                 </div>
-//             </div>
-//             {type === "task" && (
-//                 <div className="sticky-note-body checklist">
-//                     {/* Input field to add new tasks */}
-//                     <div>
-//                         <input
-//                             type="text"
-//                             value={newTask}
-//                             onChange={handleNewTaskChange}
-//                             placeholder="Add a new task..."
-//                         />
-//                         <button onClick={addTask}>Add</button>
-//                     </div>
-
-//                     {/* Render the list of tasks */}
-//                     <ul>
-//                         {tasks.map((task) => (
-//                             <li key={task.id}>
-//                                 <input
-//                                     type="checkbox"
-//                                     checked={task.completed}
-//                                     onChange={() => toggleTaskCompletion(task.id)}
-//                                 />
-//                                 <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
-//                                     {task.text}
-//                                 </span>
-//                                 <button onClick={() => removeTask(task.id)}>Remove</button>
-//                             </li>
-//                         ))}
-//                     </ul>
-//                 </div>
-//             )}
-//             {type === "freeText" && (
-//                 <textarea placeholder="Enter text here" className="sticky-note-body"></textarea>
-//             )}
-//         </div>
-//     )
-// }
-
-// export default StickyNote;
 function StickyNote({ onClose, type }) {
-    const [allowMove, setAllowMove] = useState(false);
-    const [tasks, setTasks] = useState([]);
-    const [newTask, setNewTask] = useState("");
+    // Get a reference to a sticky note
     const stickyNoteRef = useRef();
+    // Create states for moving a sticky note and its current coordinates
+    const [allowMove, setAllowMove] = useState(false);
 
     const [dx, setDx] = useState(0);
     const [dy, setDy] = useState(0);
+
+    // Initialize tasks with an array of default tasks
+    const [tasks, setTasks] = useState([
+        { id: 1, text: "Task 1", completed: false },
+        { id: 2, text: "Task 2", completed: false },
+        { id: 3, text: "Task 3", completed: false },
+    ]);
+
+    // State for the task currently being edited
+    const [editingTaskId, setEditingTaskId] = useState(null);
 
     // Function to handle mouse down event
     function handleMouseDown(e) {
@@ -137,19 +43,7 @@ function StickyNote({ onClose, type }) {
         setAllowMove(false);
     }
 
-    // Handle task related behavior
-    function handleNewTaskChange(e) {
-        setNewTask(e.target.value);
-    }
-
-    function addTask() {
-        if (newTask.trim()) {
-            const task = { id: Date.now(), text: newTask, completed: false };
-            setTasks((prevTasks) => [...prevTasks, task]);
-            setNewTask("");
-        }
-    }
-
+    // Function to toggle task completion
     function toggleTaskCompletion(taskId) {
         setTasks((prevTasks) =>
             prevTasks.map((task) =>
@@ -158,8 +52,30 @@ function StickyNote({ onClose, type }) {
         );
     }
 
+    // Function to remove a task
     function removeTask(taskId) {
         setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+    }
+
+    // Function to handle starting task editing
+    function startEditingTask(taskId) {
+        setEditingTaskId(taskId);
+    }
+
+    // Function to handle input change during task editing
+    function handleInputChange(e) {
+        const newValue = e.target.value;
+        // Update the text of the task being edited
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === editingTaskId ? { ...task, text: newValue } : task
+            )
+        );
+    }
+
+    // Function to handle finishing task editing
+    function finishEditingTask() {
+        setEditingTaskId(null);
     }
 
     return (
@@ -177,31 +93,32 @@ function StickyNote({ onClose, type }) {
             </div>
             {type === "task" && (
                 <div className="sticky-note-body checklist">
-                    <div>
-                        <input
-                            type="text"
-                            value={newTask}
-                            onChange={handleNewTaskChange}
-                            placeholder="Add a new task..."
-                        />
-                        <button onClick={addTask}>Add</button>
-                    </div>
-
-                    <ul>
-                        {tasks.map((task) => (
-                            <li key={task.id}>
+                    {/* Render tasks as individual div elements */}
+                    {tasks.map((task) => (
+                        <div key={task.id}>
+                            <input
+                                type="checkbox"
+                                checked={task.completed}
+                                onChange={() => toggleTaskCompletion(task.id)}
+                            />
+                            {editingTaskId === task.id ? (
                                 <input
-                                    type="checkbox"
-                                    checked={task.completed}
-                                    onChange={() => toggleTaskCompletion(task.id)}
+                                    type="text"
+                                    value={task.text}
+                                    onChange={handleInputChange}
+                                    onBlur={finishEditingTask}
                                 />
-                                <span style={{ textDecoration: task.completed ? "line-through" : "none" }}>
+                            ) : (
+                                <span
+                                    style={{ textDecoration: task.completed ? "line-through" : "none" }}
+                                    onClick={() => startEditingTask(task.id)}
+                                >
                                     {task.text}
                                 </span>
-                                <button onClick={() => removeTask(task.id)}>Remove</button>
-                            </li>
-                        ))}
-                    </ul>
+                            )}
+                            <button className="removing-a-task" onClick={() => removeTask(task.id)}>x</button>
+                        </div>
+                    ))}
                 </div>
             )}
             {type === "freeText" && (
