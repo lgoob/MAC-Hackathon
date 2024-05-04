@@ -4,7 +4,11 @@ module.exports = {
   content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   darkMode: false,
   theme: {
-    extend: {},
+    extend: {     
+      backgroundImage: {
+        'hero': "url('./pictures/Cafe (Night).jpg')",
+      },
+    },
   },
   variants: {},
   plugins: [],
