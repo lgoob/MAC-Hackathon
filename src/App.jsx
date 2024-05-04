@@ -2,9 +2,8 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Whiteboards from "./pages/Whiteboards";
 import Whiteboard from "./pages/Whiteboard";
-import Corkboard from './components/Corkboard'; // Make sure the path is correct
+import Corkboard from "./components/Corkboard"; // Make sure the path is correct
 import StickyNotesPage from "./pages/StickyNotesPage";
-
 
 function App() {
   return (
@@ -14,7 +13,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/Whiteboard" element={<Whiteboard />} />
-            <Route path="/Corkboard" element={<Corkboard />} /> 
+            <Route path="/Corkboard" element={<Corkboard />} />
             <Route path="/whiteboards" element={<Whiteboards />} />
             <Route path="/whiteboards/:id" element={<Whiteboard />} />
             <Route path="/stickynote" element={<StickyNotesPage />} />
