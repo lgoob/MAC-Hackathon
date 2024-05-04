@@ -11,13 +11,12 @@ function App() {
       <div>
         <Router>
           <Routes>
-            {/* <Route path="/" element={<Home />} /> */}
-            <Route path="/" element={<StickyNotesPage />} />
+            <Route path="/" element={<Home />} />
             <Route path="/Whiteboard" element={<Whiteboard />} />
             <Route path="/Corkboard" element={<Corkboard />} />
             <Route path="/whiteboards" element={<Whiteboards />} />
             <Route path="/whiteboards/:id" element={<Whiteboard />} />
-            {/* <Route path="/stickynote" element={<StickyNotesPage />} /> */}
+            <Route path="/stickynote" element={<StickyNotesPage />} />
           </Routes>
         </Router>
       </div>
