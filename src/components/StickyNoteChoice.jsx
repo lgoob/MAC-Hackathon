@@ -1,5 +1,8 @@
 import React from "react";
 import "../stickyNotePopUp.css";
+import AssignmentTaskList from "../photosAndIcons/AssignmentTaskList.png";
+import FreeTextNote from "../photosAndIcons/FreeTextNote.png";
+
 
 function StickyNoteChoice ({ isVisible, onClose }) {
     if (!isVisible) return null; // If not visible, don't render the component
@@ -17,8 +20,8 @@ function StickyNoteChoice ({ isVisible, onClose }) {
                 <form onSubmit={handleSubmit}>
                     <div>
                         Please select one of the 2 available options:
-                        <button>Assignment Task List</button>
-                        <button>Free text</button>
+                        <button>Assignment Task List <img src={AssignmentTaskList} alt="taskListStickyNote" /></button>
+                        <button>Free text <img src={FreeTextNote} alt="freeTextStickyNote" /></button>
                     </div>
                 </form>
             </div>
