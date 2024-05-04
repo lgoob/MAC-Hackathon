@@ -96,7 +96,7 @@ function StickyNote({ onClose, type }) {
           placeholder="Enter title..."
         />
         <div className="text-lg font-bold cursor-pointer" onClick={onClose}>
-          <IoClose />
+          <IoClose className="size-6" />
         </div>
       </div>
       {type === "task" && (
