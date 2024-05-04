@@ -1,7 +1,7 @@
 .corkboard-container {
     width: 25vw;
     height: 100vh;
-    background-image: url('./corkboard.jpeg');
+    background-image: url('../pictures/corkboard.jpeg');
     display: grid;
     grid-template-columns: 1fr 1fr; /* Two columns */
     grid-template-rows: auto auto; /* Rows size according to content */
