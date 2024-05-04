@@ -1,12 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import WhiteboardTile from "../components/WhiteboardTile";
 
+
+
+
 function Whiteboards() {
   const [whiteboards, setWhiteboards] = useState([]);
-  const isInitialMount = useRef(true); // useRef to track initial mount
+  const isInitialMount = useRef(true); {/*useRef to track initial mount as randomly getting overriden by another file*/}
+
+
+
+
 
   useEffect(() => {
-    // Load whiteboards from localStorage only on initial mount
+    //Load ONLY on Initial Mount (otherwise removed from local on second pass)
     if (isInitialMount.current) {
       const savedWhiteboards = localStorage.getItem("whiteboards");
       if (savedWhiteboards) {
@@ -17,14 +24,18 @@ function Whiteboards() {
           setWhiteboards([]);
         }
       }
-      isInitialMount.current = false; // Update ref after initial mount
+      isInitialMount.current = false; //Checks if initial mount or not
     }
-  }, []); // Empty dependency array means this effect runs only once, on mount
+  }, []); 
+
+
+
 
   useEffect(() => {
     // Save whiteboards to localStorage on change
     localStorage.setItem("whiteboards", JSON.stringify(whiteboards));
   }, [whiteboards]);
+
 
   const addWhiteboard = () => {
     const whiteboardId = window.prompt("Enter the whiteboard ID:");
@@ -35,25 +46,26 @@ function Whiteboards() {
     }
   };
 
-  const removeWhiteboard = (idToRemove) => {
-    const updatedWhiteboards = whiteboards.filter((board) => board.id !== idToRemove);
-    setWhiteboards(updatedWhiteboards);
-  };
 
-  const clearWhiteboards = () => {
-    const whiteboardIdsToRemove = prompt("Enter the IDs of whiteboards to remove (separated by commas):");
-    if (whiteboardIdsToRemove) {
-      const idsToRemove = whiteboardIdsToRemove.split(",").map((id) => id.trim());
-      const updatedWhiteboards = whiteboards.filter((board) => !idsToRemove.includes(board.id));
+
+{/*Clear Whiteboard - might add Remove icon later*/}
+const clearWhiteboard = () => {
+    const whiteboardIdToRemove = prompt("Enter the ID of the whiteboard to remove:");
+    if (whiteboardIdToRemove) {
+      // Filter out the whiteboard to remove
+      const updatedWhiteboards = whiteboards.filter((board) => board.id !== whiteboardIdToRemove);
       setWhiteboards(updatedWhiteboards);
+    //Also remove data from localStorage
+      localStorage.removeItem("whiteboard_" + whiteboardIdToRemove);
     }
   };
+  
 
   return (
     <div>
       <h1>Whiteboards</h1>
       <button onClick={addWhiteboard}>Add New Whiteboard</button>
-      <button onClick={clearWhiteboards}>Remove Selected Whiteboards</button>
+      <button onClick={clearWhiteboard}>Remove Selected Whiteboard</button>
       <div style={{ display: "flex", flexWrap: "wrap" }}>
         {whiteboards.map((board) => (
           <WhiteboardTile key={board.id} id={board.id} onRemove={() => removeWhiteboard(board.id)} />

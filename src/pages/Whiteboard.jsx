@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import DrawingCanvas from "../components/DrawingCanvas";
 import Pens from "../components/Utility Bar/Pens";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+
 
 function Whiteboard() {
-  const { id } = useParams();
-  const [color, setColor] = useState("black");
-  const [strokes, setStrokes] = useState([]);
+  const { id } = useParams(); {/* ID of current board*/}
+  const [color, setColor] = useState("black"); {/*Set initial colour to black - will revert on page refresh!*/}
+  const [strokes, setStrokes] = useState([]); {/*Set strokes for fetch from local*/}
 
   useEffect(() => {
-    // Load strokes from localStorage
+    {/* ID of boards*/}
     const savedStrokes = localStorage.getItem(`whiteboard_${id}`);
     if (savedStrokes) {
       try {
@@ -32,9 +33,11 @@ function Whiteboard() {
 
   return (
     <div>
-      <h1>Draw your masterpiece on whiteboard {id}</h1>
+    
+      <h1>Create your masterpiece: {id}</h1>
       <DrawingCanvas color={color} strokes={strokes} setStrokes={setStrokes} id={id} />
       <Pens setColor={setColor} />
+      <Link to = "/whiteboards"><button>Return to boards</button></Link>
     </div>
   );
 }
