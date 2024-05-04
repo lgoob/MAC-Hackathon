@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DrawingCanvas from "../components/DrawingCanvas";
 import Pens from "../components/Utility Bar/Pens";
 import { useParams, Link } from "react-router-dom";
-
+import StickyNotesPage from "./StickyNotesPage";
 
 function Whiteboard() {
   const { id } = useParams(); {/* ID of current board*/}
@@ -38,6 +38,7 @@ function Whiteboard() {
       <DrawingCanvas color={color} strokes={strokes} setStrokes={setStrokes} id={id} />
       <Pens setColor={setColor} />
       <Link to = "/whiteboards"><button>Return to boards</button></Link>
+      <StickyNotesPage />
     </div>
   );
 }
