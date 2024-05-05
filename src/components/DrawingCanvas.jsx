@@ -1,30 +1,49 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useCallback, useState } from "react";
 
-// Canvas Creation
 const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
   const canvasRef = useRef(null);
+  const parentDivRef = useRef(null);
+  const [canvasWidth, setCanvasWidth] = useState(0);
+  const [canvasHeight, setCanvasHeight] = useState(0);
+
+  const updateCanvasSize = useCallback(() => {
+    if (parentDivRef.current) {
+      setCanvasWidth(parentDivRef.current.clientWidth);
+      setCanvasHeight(parentDivRef.current.clientHeight);
+    }
+  }, []);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
+    // Initialize the canvas size
+    updateCanvasSize();
 
-    // Set white background
+    // Listen for window resizing
+    window.addEventListener("resize", updateCanvasSize);
+    return () => window.removeEventListener("resize", updateCanvasSize);
+  }, [updateCanvasSize]);
+
+  const drawStrokes = useCallback((ctx, strokeData) => {
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
 
-    // Draw strokes
-    strokes.forEach((stroke) => {
+    strokeData.forEach((stroke) => {
       ctx.fillStyle = stroke.color === "eraser" ? "white" : stroke.color;
       ctx.beginPath();
       ctx.arc(stroke.x, stroke.y, stroke.size / 2, 0, 2 * Math.PI);
       ctx.fill();
     });
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
 
     const handleMouseMove = (e) => {
       if (e.buttons === 1) {
         const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+        const x = (e.clientX - rect.left) * (canvas.width / rect.width);
+        const y = (e.clientY - rect.top) * (canvas.height / rect.height);
         const size = 10;
         const drawColor = color === "eraser" ? "white" : color;
         ctx.fillStyle = drawColor;
@@ -36,8 +55,19 @@ const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
     };
 
     canvas.addEventListener("mousemove", handleMouseMove);
+    drawStrokes(ctx, strokes);
+
     return () => canvas.removeEventListener("mousemove", handleMouseMove);
-  }, [color, strokes, setStrokes]);
+  }, [color, strokes, setStrokes, drawStrokes]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    drawStrokes(ctx, strokes);
+  }, [canvasWidth, canvasHeight, drawStrokes, strokes]);
 
   const clearCanvas = (event) => {
     event.preventDefault();
@@ -46,12 +76,10 @@ const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
   };
 
   return (
-    <div>
+    <div ref={parentDivRef} className="relative w-full h-full flex flex-col items-center">
       <canvas
         ref={canvasRef}
-        width={1600}
-        height={1000}
-        style={{ border: "1px solid black" }}
+        className="border-4 border-stone-300 rounded-2xl"
       ></canvas>
       <button
         onClick={clearCanvas}

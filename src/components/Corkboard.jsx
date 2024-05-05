@@ -63,7 +63,7 @@ const Corkboard = () => {
   };
 
   return (
-    <div className="bg-yellow-900 p-4 w-96 h-screen m-5 rounded-xl">
+    <div className="bg-yellow-900 p-4 w-full h-screen rounded-xl">
       <h1 className="text-3xl font-bold font-serif text-white opacity-50 text-center">
         Pins
       </h1>
