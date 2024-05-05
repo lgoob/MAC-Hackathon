@@ -68,7 +68,7 @@ function StickyNote({ onClose, type, id }) {
     localStorage.setItem(`stickyNote_${id}_position`, JSON.stringify(position));
   }
 
-  
+
   function handleTitleChange(e) {
       const newTitle = e.target.value;
       if (newTitle.length > 25) {
@@ -84,8 +84,14 @@ function StickyNote({ onClose, type, id }) {
 
   function handleTextChange(e) {
     const newText = e.target.value;
-    setText(newText);
-    localStorage.setItem(`stickyNote_${id}_text`, newText);
+    if (newText.length > 200) {
+      // If the new text exceeds 200 characters, notify the user
+      alert("Text cannot exceed 200 characters. Please reduce your text.");
+    }
+    else {
+      setText(newText);
+      localStorage.setItem(`stickyNote_${id}_text`, newText);
+    }
   }
 
   function toggleTaskCompletion(taskId) {
@@ -174,9 +180,9 @@ function StickyNote({ onClose, type, id }) {
         </div>
       )}
       {type === "freeText" && (
-        <textarea
+       <textarea
           placeholder="Enter text here"
-          className="p-2 h-40 text-sm resize-none outline-none bg-transparent"
+          className="p-2 h-full text-sm w-full resize-none outline-none bg-transparent leading-10 tracking-wider"
           value={text}
           onChange={handleTextChange}
         ></textarea>
