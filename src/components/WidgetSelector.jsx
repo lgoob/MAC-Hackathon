@@ -1,5 +1,5 @@
-// src/components/WidgetSelector.jsx
 import React, { useRef } from "react";
+import { IoIosClose } from "react-icons/io";
 
 const WidgetSelector = ({ widgetOptions, addWidget, onClose }) => {
   const modalRef = useRef(null);
@@ -15,13 +15,25 @@ const WidgetSelector = ({ widgetOptions, addWidget, onClose }) => {
       className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
       onClick={handleOutsideClick}
     >
-      <div ref={modalRef} className="bg-white p-4 rounded-lg shadow-md w-1/2">
+      <div
+        ref={modalRef}
+        className="bg-white p-4 rounded-lg shadow-md w-2/3 relative"
+      >
         <h4 className="text-lg font-bold mb-4">Select a Widget</h4>
-        <div className="grid grid-cols-3 gap-4">
+        <button
+          className="absolute top-2 right-2"
+          onClick={(event) => {
+            event.stopPropagation();
+            onClose();
+          }}
+        >
+          <IoIosClose className="size-9" />
+        </button>
+        <div className="grid grid-cols-4 gap-5 mb-1">
           {widgetOptions.map((option) => (
             <div
               key={option.id}
-              className="bg-white rounded-lg shadow-lg border-t-1 p-4 w-48 hover:scale-105 transition-transform duration-200"
+              className={`bg-white rounded-lg border-l shadow-md h-48 border-t-1 col-span-${option.colSpan} hover:scale-105 transition-transform duration-200`}
               onClick={(event) => {
                 event.stopPropagation();
                 addWidget(option);
@@ -30,20 +42,11 @@ const WidgetSelector = ({ widgetOptions, addWidget, onClose }) => {
               <img
                 src={option.image}
                 alt={`Select ${option.id}`}
-                className="w-full h-auto"
+                className="object-cover w-full h-full rounded-lg"
               />
             </div>
           ))}
         </div>
-        <button
-          className="mt-4 bg-white shadow-md border-t border-l text-red-600 px-4 py-2 rounded"
-          onClick={(event) => {
-            event.stopPropagation();
-            onClose();
-          }}
-        >
-          Close
-        </button>
       </div>
     </div>
   );
