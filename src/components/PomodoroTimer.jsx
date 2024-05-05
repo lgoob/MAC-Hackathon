@@ -126,10 +126,11 @@ const PomodoroTimer = () => {
     };
 
     const reset = () => {
-        setTime(initialTime);
-        setIsActive(false);
-        setShowInput(true);
-    };
+      // Set the time to the initial time from the context
+      setTime(customTime * 60); // Sets time to the initial customTime value
+      setIsActive(false);
+      setShowInput(true);
+  };
 
     const handleChange = (e) => {
         setCustomTime(e.target.value);
