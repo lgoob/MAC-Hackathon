@@ -27,8 +27,8 @@ function StickyNote({ onClose, type, id }) {
 
   const handleMouseMove = (event) => {
     if (isDragging) {
-      const x = event.clientX - offset.x;
-      const y = event.clientY - offset.y;
+      const x = event.clientX - 100;
+      const y = event.clientY - 100;
       stickyNoteRef.current.style.left = `${x}px`;
       stickyNoteRef.current.style.top = `${y}px`;
     }
@@ -37,8 +37,8 @@ function StickyNote({ onClose, type, id }) {
   const handleMouseUp = () => {
     setIsDragging(false);
     const position = {
-      x: parseInt(stickyNoteRef.current.style.left, 10),
-      y: parseInt(stickyNoteRef.current.style.top, 10),
+      x: parseInt(stickyNoteRef.current.style.left),
+      y: parseInt(stickyNoteRef.current.style.top),
     };
     localStorage.setItem(`stickyNote_${id}_position`, JSON.stringify(position));
   };
