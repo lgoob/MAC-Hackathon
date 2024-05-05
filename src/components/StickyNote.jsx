@@ -110,7 +110,7 @@ function StickyNote({ onClose, type, id }) {
   }
 
   return (
-    <div className="fixed size-80 bg-yellow-100 rounded-xl shadow-xl" ref={stickyNoteRef}>
+    <div className="absolute size-80 bg-yellow-100 rounded-xl shadow-xl" ref={stickyNoteRef}>
       <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg cursor-move"
         onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
         <input
