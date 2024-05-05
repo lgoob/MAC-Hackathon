@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StickyNote from "../components/StickyNote";
 import StickyNoteChoice from "../components/StickyNoteChoice";
 import { FaPlus } from "react-icons/fa6";
@@ -7,6 +7,16 @@ function StickyNotesPage() {
   const [notes, setNotes] = useState([]);
   const [visiblePopup, setVisiblePopup] = useState(false);
   const [chosenType, setChosenType] = useState(null);
+  useEffect(() => {
+    const loadedNotes = JSON.parse(localStorage.getItem("stickyNotes"));
+    if (loadedNotes) {
+      setNotes(loadedNotes);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("stickyNotes", JSON.stringify(notes));
+  }, [notes]);
 
   // Function to open the sticky note choice popup
   function openStickyNoteChoice() {
@@ -72,7 +82,7 @@ function StickyNotesPage() {
       {/* Render the sticky notes */}
       {notes.map((note) => (
         <StickyNote
-          key={note.id}
+          id={note.id}
           type={note.type}
           onClose={() => removeNoteById(note.id)}
         />
