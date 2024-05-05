@@ -2,11 +2,11 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Clock from "../components/Clock";
 import quotes from "../components/Motivation.json";
-import FocusHourLogo from "../pictures/Icon.jpg";
 import PomodoroTimer from "../components/PomodoroTimer";
 import backgroundJazz from "../sounds/background-jazz.mp3";
 import seaRoad from "../sounds/sea-road.mp3";
 import { HiMiniArrowUpRight } from "react-icons/hi2";
+import { IoIosTimer } from "react-icons/io";
 
 function Home() {
   const [quote, setQuote] = useState("");
@@ -61,84 +61,47 @@ function Home() {
           </h1>
         </div>
         <div className="bg-black bg-opacity-60 transition-transform w-screen-md rounded-xl p-10 flex flex-col items-center justify-center">
-          <div className=" text-xl transition-all text-white shadow-inner font-medium font-serif text-center mb-10">
+          <div className=" text-xl transition-all max-w-screen-sm text-white shadow-inner font-medium font-serif text-center mb-10">
             {quote}
           </div>
           <Clock />
         </div>
-
-        <div className="fixed bottom-20 right-20 space-x-4">
+        <div className="fixed bottom-20 right-20 flex items-center space-x-4">
           <button
             type="button"
-            className="relative inline-flex items-center p-10 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white opacity-40 dark:focus:ring-black"
+            className="relative inline-flex items-center rounded-full bg-white p-3"
             onClick={togglePomodoro}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="3em"
-              height="3em"
-              viewBox="0 0 24 24"
-            >
-              <path
-                fill="currentColor"
-                d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,20a9,9,0,1,1,9-9A9,9,0,0,1,12,21Z"
-              />
-              <rect
-                width="2"
-                height="7"
-                x="11"
-                y="6"
-                fill="currentColor"
-                rx="1"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  dur="9000s"
-                  repeatCount="indefinite"
-                  type="rotate"
-                  values="0 12 12;360 12 12"
-                />
-              </rect>
-              <rect
-                width="2"
-                height="9"
-                x="11"
-                y="11"
-                fill="currentColor"
-                rx="1"
-              >
-                <animateTransform
-                  attributeName="transform"
-                  dur="750s"
-                  repeatCount="indefinite"
-                  type="rotate"
-                  values="0 12 12;360 12 12"
-                />
-              </rect>
-            </svg>
+            <IoIosTimer className="size-10" />
+
             <span className="sr-only">Pomodoro</span>
           </button>
 
-          <button
-            type="button"
-            className="opacity-60 relative inline-flex items-center p-3 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white dark:focus:ring-black"
-            onClick={() => handleAudioToggle(backgroundJazzAudio)}
-          >
-            {playingAudio === backgroundJazzAudio &&
-            !backgroundJazzAudio.current.paused
-              ? "Pause Jazz"
-              : "Play Jazz"}
-          </button>
-          <button
-            type="button"
-            className="opacity-60 relative inline-flex items-center p-3 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white dark:focus:ring-black"
-            onClick={() => handleAudioToggle(cafeAmbienceAudio)}
-          >
-            {playingAudio === cafeAmbienceAudio &&
-            !cafeAmbienceAudio.current.paused
-              ? "Pause Lofi"
-              : "Play Lofi"}
-          </button>
+          <div className="bg-white p-4 rounded-lg text-center">
+            <h2 className="text-lg font-bold mb-5">Ambient Music</h2>
+            <div className="space-x-4">
+              <button
+                type="button"
+                className="p-3 text-sm shadow-md border-t-2 border-white border-l-2 rounded-lg w-28"
+                onClick={() => handleAudioToggle(backgroundJazzAudio)}
+              >
+                {playingAudio === backgroundJazzAudio &&
+                !backgroundJazzAudio.current.paused
+                  ? "Pause Jazz"
+                  : "Play Jazz"}
+              </button>
+              <button
+                type="button"
+                className="p-3 text-sm shadow-md border-t-2 border-white border-l-2 rounded-lg w-28"
+                onClick={() => handleAudioToggle(cafeAmbienceAudio)}
+              >
+                {playingAudio === cafeAmbienceAudio &&
+                !cafeAmbienceAudio.current.paused
+                  ? "Pause Lofi"
+                  : "Play Lofi"}
+              </button>
+            </div>
+          </div>
         </div>
         {showPomodoro && (
           <div className="absolute bottom-40 right-40">
