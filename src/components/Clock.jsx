@@ -1,16 +1,25 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function Clock() {
-    let time = new Date().toLocaleTimeString()
+  let time = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 
-    const[ctime,setTime] = useState(time);
-    const UpdateTime=()=>{
-        time = new Date().toLocaleTimeString()
-        setTime(time)
-    }
-    setInterval(UpdateTime)
-    return<h1 class="text-9xl font-serif drop-shadow-[0_1.2px_10px_rgba(0,0,0,0.8)] font-black text-white">{ctime}</h1>
-    }
-
+  const [ctime, setTime] = useState(time);
+  const UpdateTime = () => {
+    time = new Date().toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+    setTime(time);
+  };
+  setInterval(UpdateTime);
+  return (
+    <h1 class="text-9xl tracking-wide  font-sans font-black slashed-zero text-white">
+      {ctime}
+    </h1>
+  );
+}
 
 export default Clock;
