@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import WhiteboardTile from "../components/WhiteboardTile";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 function Whiteboards() {
   const [whiteboards, setWhiteboards] = useState([]);
   const [showAddWhiteboardModal, setShowAddWhiteboardModal] = useState(false);
   const [newWhiteboardName, setNewWhiteboardName] = useState("");
   const [remainingCharacters, setRemainingCharacters] = useState(25);
+  const inputRef = useRef(null);
   const isInitialMount = useRef(true);
 
   useEffect(() => {
@@ -37,7 +38,8 @@ function Whiteboards() {
     setRemainingCharacters(remaining);
   };
 
-  const addWhiteboard = () => {
+  const addWhiteboard = (event) => {
+    event.preventDefault();
     // Only add whiteboard if the input is within the character limit and non-empty
     if (newWhiteboardName.trim() !== "" && remainingCharacters >= 0) {
       const newWhiteboards = [...whiteboards, { id: newWhiteboardName.trim() }];
@@ -48,13 +50,14 @@ function Whiteboards() {
     }
   };
 
-
   const handleDeleteWhiteboard = (id) => {
-    const updatedWhiteboards = whiteboards.filter((board) => board.id !== id);
-    setWhiteboards(updatedWhiteboards);
-    localStorage.removeItem(`whiteboard_${id}`);
+    const userConfirmed = window.confirm(`Are you sure you want to delete ${id}?`);
+    if (userConfirmed) {
+      const updatedWhiteboards = whiteboards.filter((board) => board.id !== id);
+      setWhiteboards(updatedWhiteboards);
+      localStorage.removeItem(`whiteboard_${id}`);
+    }
   };
-
 
   const openAddWhiteboardModal = () => {
     setShowAddWhiteboardModal(true);
@@ -67,13 +70,29 @@ function Whiteboards() {
     setRemainingCharacters(25);
   };
 
+  // Automatically focus on the input field when the modal is opened
+  useEffect(() => {
+    if (showAddWhiteboardModal && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showAddWhiteboardModal]);
+
   return (
     <div className="bg-whiteboards bg-cover bg-center bg-no-repeat min-h-screen w-full relative">
       {/* "Lock in" button in the top left corner */}
       <Link to="/">
-        <button type="button" className="absolute top-4 left-4 w-auto px-6 py-4 text-lg font-semibold text-gray-100 transition-colors duration-200 bg-gray-800 hover:bg-gray-900 border border-gray-700 rounded-lg flex items-center gap-x-3 cursor-pointer">
-          <svg className="w-6 h-6 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
-            viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+        <button
+          type="button"
+          className="absolute top-4 left-4 w-auto px-6 py-4 text-lg font-semibold text-gray-100 transition-colors duration-200 bg-gray-800 hover:bg-gray-900 border border-gray-700 rounded-lg flex items-center gap-x-3 cursor-pointer"
+        >
+          <svg
+            className="w-6 h-6 rtl:rotate-180"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+          >
             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/>
           </svg>
           <span>Lock in</span>
@@ -115,7 +134,7 @@ function Whiteboards() {
 
           <div className="grid grid-cols-3 gap-4 justify-center">
             {whiteboards.map((board) => (
-              <WhiteboardTile key={board.id} id={board.id} onDelete={handleDeleteWhiteboard}/>
+              <WhiteboardTile key={board.id} id={board.id} onDelete={handleDeleteWhiteboard} />
             ))}
           </div>
         </div>
@@ -124,42 +143,46 @@ function Whiteboards() {
       {/* Add Whiteboard Modal */}
       {showAddWhiteboardModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <div className="bg-white p-6 rounded-lg shadow-lg">
-          <h3 className="text-lg font-bold mb-4 text-orange-800">Add Whiteboard</h3>
-          <input
-            type="text"
-            value={newWhiteboardName}
-            onChange={handleWhiteboardNameChange}
-            placeholder="Enter whiteboard name"
-            className="w-full px-4 py-2 rounded-lg shadow-lg text-lg mb-2 border border-orange-400 focus:outline-none focus:border-orange-600"
-            maxLength={25}
-          />
-          {/* Remaining characters counter */}
-          <p className={`text-sm ${remainingCharacters < 0 ? 'text-red-500' : 'text-orange-800'}`}>
-            {remainingCharacters < 0 ? '0' : remainingCharacters} characters left
-          </p>
-      
-          <div className="flex justify-between mt-4">
-            {/* Add whiteboard button */}
-            <button
-              onClick={addWhiteboard}
-              className={`px-4 py-2 bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition duration-200 ease-in-out ${remainingCharacters < 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-              disabled={remainingCharacters < 0}
-            >
-              Add
-            </button>
-      
-            {/* Cancel button */}
-            <button
-              onClick={closeAddWhiteboardModal}
-              className="px-4 py-2 bg-rose-600 text-white font-bold rounded-lg hover:bg-rose-700 transition duration-200 ease-in-out"
-            >
-              Cancel
-            </button>
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h3 className="text-lg font-bold mb-4 text-orange-800">Add Whiteboard</h3>
+            <form onSubmit={addWhiteboard}>
+              <input
+                ref={inputRef}  // Reference the input field
+                type="text"
+                value={newWhiteboardName}
+                onChange={handleWhiteboardNameChange}
+                placeholder="Enter whiteboard name"
+                className="w-full px-4 py-2 rounded-lg shadow-lg text-lg mb-2 border border-orange-400 focus:outline-none focus:border-orange-600"
+                maxLength={25}
+                required
+              />
+              {/* Remaining characters counter */}
+              <p className={`text-sm ${remainingCharacters < 0 ? 'text-red-500' : 'text-orange-800'}`}>
+                {remainingCharacters < 0 ? '0' : remainingCharacters} characters left
+              </p>
+
+              <div className="flex justify-between mt-4">
+                {/* Add whiteboard button */}
+                <button
+                  type="submit"
+                  className={`px-4 py-2 bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition duration-200 ease-in-out ${remainingCharacters < 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                  disabled={remainingCharacters < 0}
+                >
+                  Add
+                </button>
+
+                {/* Cancel button */}
+                <button
+                  onClick={closeAddWhiteboardModal}
+                  type="button"
+                  className="px-4 py-2 bg-rose-600 text-white font-bold rounded-lg hover:bg-rose-700 transition duration-200 ease-in-out"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-      </div>
-      
       )}
     </div>
   );
