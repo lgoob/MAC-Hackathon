@@ -156,7 +156,7 @@ function StickyNote({ onClose, type, id }) {
           className="text-xl font-semibold bg-transparent focus:outline-none"
           placeholder="Enter title..."
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleTitleChange}
           onBlur={() => localStorage.setItem(`stickyNote_${id}_title`, title)}
         />
         <div class="text-lg font-bold cursor-pointer" onClick={onClose}>
@@ -221,7 +221,7 @@ function StickyNote({ onClose, type, id }) {
       {type === "freeText" && (
        <textarea
           placeholder="Enter text here"
-          className="p-2 h-full text-sm w-full resize-none outline-none bg-transparent leading-10 tracking-wider"
+          className="p-6 h-full text-lg w-full resize-none outline-none bg-transparent leading-10 tracking-wider"
           value={text}
           onChange={handleTextChange}
         ></textarea>
