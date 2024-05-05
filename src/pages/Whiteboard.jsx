@@ -3,6 +3,7 @@ import DrawingCanvas from "../components/DrawingCanvas";
 import Pens from "../components/Utility Bar/Pens";
 import { useParams, Link } from "react-router-dom";
 import StickyNotesPage from "./StickyNotesPage";
+import PomodoroTimer from "../components/PomodoroTimer";
 
 function Whiteboard() {
   const { id } = useParams();
@@ -31,6 +32,7 @@ function Whiteboard() {
 
   return (
     <div className="bg-whiteboard bg-cover bg-center bg-no-repeat h-screen w-full flex flex-col items-center">
+      <PomodoroTimer />
       <h1 className="mt-4 text-xl font-bold text-center bg-blue-200 p-2 rounded-lg">
         Create your masterpiece: {id}
       </h1>
