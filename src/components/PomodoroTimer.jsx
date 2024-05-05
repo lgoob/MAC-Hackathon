@@ -55,17 +55,17 @@ const PomodoroTimer = ({ initialTime }) => {
 
   return (
     <Draggable>
-      <div className="flex flex-col items-center bg-white rounded-lg p-4 shadow-md cursor-move">
-        <div className="text-2xl font-bold">{formatTime(time)}</div>
+      <div className="flex flex-col items-center bg-opacity-60 bg-white rounded-lg p-12 shadow-md cursor-move">
+        <div className="text-8xl font-normal text-white">{formatTime(time)}</div>
         <div className="flex mt-4 space-x-2">
           <button
-            className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 rounded"
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-5 rounded"
             onClick={toggle}
           >
             {isActive ? "Pause" : "Start"}
           </button>
           <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded"
+            className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-5 rounded"
             onClick={reset}
           >
             Reset
