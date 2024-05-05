@@ -46,12 +46,10 @@ const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
   };
 
   return (
-    <div>
+    <div className="w-full h-full">
       <canvas
         ref={canvasRef}
-        width={1600}
-        height={1000}
-        style={{ border: "1px solid black" }}
+        className="border-4 border-stone-300 w-full h-full rounded-2xl"
       ></canvas>
       <button
         onClick={clearCanvas}
