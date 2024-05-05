@@ -56,16 +56,17 @@ function Home() {
     <div className="bg-hero bg-cover bg-center bg-no-repeat h-screen w-full">
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="absolute top-0 left-0 p-4">
-          <img
-            src={FocusHourLogo}
-            alt="Focus Hour Logo"
-            className="h-28 w-28 rounded-lg"
-          />
+          <h1 className="text-5xl text-white shadow-2xl tracking-wide font-mono font-black ">
+            focusHour
+          </h1>
         </div>
-        <div className="text-center text-xl font-bold mb-4 absolute inset-x-0 top-0 h-16 p-72 font-serif drop-shadow-[0_1.2px_10px_rgba(0,0,0,0.8)] text-white">
-          {quote}
+        <div className="bg-black bg-opacity-60 transition-transform w-screen-md rounded-xl p-10 flex flex-col items-center justify-center">
+          <div className=" text-xl transition-all text-white shadow-inner font-medium font-serif text-center mb-10">
+            {quote}
+          </div>
+          <Clock />
         </div>
-        <Clock />
+
         <div className="fixed bottom-20 right-20 space-x-4">
           <button
             type="button"
