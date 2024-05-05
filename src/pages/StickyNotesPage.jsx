@@ -8,8 +8,8 @@ function StickyNotesPage() {
   const [visiblePopup, setVisiblePopup] = useState(false);
   const [chosenType, setChosenType] = useState(null);
   useEffect(() => {
-    const loadedNotes = JSON.parse(localStorage.getItem("stickyNotes"));
-    if (loadedNotes) {
+    const loadedNotes = JSON.parse(localStorage.getItem("stickyNotes") || "[]");
+    if (loadedNotes.length > 0) {
       setNotes(loadedNotes);
     }
   }, []);
@@ -81,12 +81,13 @@ function StickyNotesPage() {
 
       {/* Render the sticky notes */}
       {notes.map((note) => (
-        <StickyNote
-          id={note.id}
-          type={note.type}
-          onClose={() => removeNoteById(note.id)}
-        />
-      ))}
+  <StickyNote
+    key={note.id}  // Ensure each note has a unique key
+    id={note.id}
+    type={note.type}
+    onClose={() => removeNoteById(note.id)}
+  />
+))}
     </div>
   );
 }
