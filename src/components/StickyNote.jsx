@@ -5,28 +5,64 @@ import { FaRegTrashAlt } from "react-icons/fa";
 
 function StickyNote({ onClose, type, id }) {
   const stickyNoteRef = useRef(null);
-
-  // Initialize states for position handling
-  const [allowMove, setAllowMove] = useState(false);
-  const [dx, setDx] = useState(0);
-  const [dy, setDy] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const [offset, setOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const savedPosition = JSON.parse(localStorage.getItem(`stickyNote_${id}_position`));
-    if (savedPosition && stickyNoteRef.current) {
-      stickyNoteRef.current.style.left = savedPosition.left;
-      stickyNoteRef.current.style.top = savedPosition.top;
+    if (savedPosition) {
+      stickyNoteRef.current.style.left = `${savedPosition.x}px`;
+      stickyNoteRef.current.style.top = `${savedPosition.y}px`;
     }
   }, [id]);
 
+  const handleMouseDown = (event) => {
+    const elementRect = stickyNoteRef.current.getBoundingClientRect();
+    setOffset({
+      x: event.clientX - elementRect.left,
+      y: event.clientY - elementRect.top,
+    });
+    setIsDragging(true);
+  };
+
+  const handleMouseMove = (event) => {
+    if (isDragging) {
+      const x = event.clientX - offset.x;
+      const y = event.clientY - offset.y;
+      stickyNoteRef.current.style.left = `${x}px`;
+      stickyNoteRef.current.style.top = `${y}px`;
+    }
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    const position = {
+      x: parseInt(stickyNoteRef.current.style.left, 10),
+      y: parseInt(stickyNoteRef.current.style.top, 10),
+    };
+    localStorage.setItem(`stickyNote_${id}_position`, JSON.stringify(position));
+  };
+
+  // Add event listeners
+  useEffect(() => {
+    if (isDragging) {
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      document.removeEventListener("mousemove", handleMouseMove);
+      document.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging, offset]);
+
+  // Handling title and text
   const [title, setTitle] = useState(() => {
     return localStorage.getItem(`stickyNote_${id}_title`) || "";
   });
-
   const [text, setText] = useState(() => {
     return localStorage.getItem(`stickyNote_${id}_text`) || "";
   });
-
   // Initialize tasks with an array of default tasks
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem(`stickyNote_${id}_tasks`);
@@ -45,30 +81,11 @@ function StickyNote({ onClose, type, id }) {
 
   const [editingTaskId, setEditingTaskId] = useState(null);
 
-  function handleMouseDown(e) {
-    const dimensions = stickyNoteRef.current.getBoundingClientRect();
-    setDx(e.clientX - dimensions.x);
-    setDy(e.clientY - dimensions.y);
-    setAllowMove(true);
-  }
+  
 
-  function handleMouseMove(e) {
-    if (allowMove) {
-      const x = e.clientX - dx;
-      const y = e.clientY - dy;
-      stickyNoteRef.current.style.left = `${x}px`;
-      stickyNoteRef.current.style.top = `${y}px`;
-    }
-  }
+  
 
-  function handleMouseUp() {
-    setAllowMove(false);
-    const position = {
-      left: stickyNoteRef.current.style.left,
-      top: stickyNoteRef.current.style.top
-    };
-    localStorage.setItem(`stickyNote_${id}_position`, JSON.stringify(position));
-  }
+
 
 
   function handleTitleChange(e) {
@@ -157,17 +174,18 @@ function StickyNote({ onClose, type, id }) {
   }
 
   return (
-    <div className="fixed size-120 bg-yellow-100 rounded-xl shadow-xl w-96" ref={stickyNoteRef}>
-      <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg cursor-move"
-        onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
+
+    <div className="absolute size-120 bg-yellow-100 rounded-xl shadow-xl w-96" ref={stickyNoteRef} onMouseDown={handleMouseDown} style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
+      <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg cursor-move">
         <input
           className="text-xl font-semibold bg-transparent focus:outline-none"
           placeholder="Enter title..."
           value={title}
-          onChange={handleTitleChange}
+          onChange={(e) => setTitle(e.target.value)}
+          onBlur={() => localStorage.setItem(`stickyNote_${id}_title`, title)}
         />
         <div className="text-lg font-bold cursor-pointer" onClick={onClose}>
-          <IoClose className="size-6" />
+          <IoClose />
         </div>
       </div>
       {type === "task" && (
