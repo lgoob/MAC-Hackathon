@@ -6,6 +6,7 @@ import FocusHourLogo from "../pictures/Icon.jpg";
 import PomodoroTimer from "../components/PomodoroTimer";
 import backgroundJazz from "../sounds/background-jazz.mp3";
 import seaRoad from "../sounds/sea-road.mp3";
+import { HiMiniArrowUpRight } from "react-icons/hi2";
 
 function Home() {
   const [quote, setQuote] = useState("");
@@ -24,7 +25,6 @@ function Home() {
   }, []);
 
   const togglePomodoro = () => setShowPomodoro(!showPomodoro);
-
 
   const handleAudioToggle = (audioRef) => {
     if (playingAudio && playingAudio !== audioRef) {
@@ -52,8 +52,6 @@ function Home() {
     }
   };
 
-  
-
   return (
     <div className="bg-hero bg-cover bg-center bg-no-repeat h-screen w-full">
       <div className="flex flex-col items-center justify-center h-screen">
@@ -69,8 +67,7 @@ function Home() {
         </div>
         <Clock />
         <div className="fixed bottom-20 right-20 space-x-4">
-          
-        <button
+          <button
             type="button"
             className="relative inline-flex items-center p-10 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white opacity-40 dark:focus:ring-black"
             onClick={togglePomodoro}
@@ -120,20 +117,26 @@ function Home() {
             </svg>
             <span className="sr-only">Pomodoro</span>
           </button>
-          
+
           <button
             type="button"
             className="opacity-60 relative inline-flex items-center p-3 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white dark:focus:ring-black"
             onClick={() => handleAudioToggle(backgroundJazzAudio)}
           >
-            {playingAudio === backgroundJazzAudio && !backgroundJazzAudio.current.paused ? 'Pause Jazz' : 'Play Jazz'}
+            {playingAudio === backgroundJazzAudio &&
+            !backgroundJazzAudio.current.paused
+              ? "Pause Jazz"
+              : "Play Jazz"}
           </button>
           <button
             type="button"
             className="opacity-60 relative inline-flex items-center p-3 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white dark:focus:ring-black"
             onClick={() => handleAudioToggle(cafeAmbienceAudio)}
           >
-            {playingAudio === cafeAmbienceAudio && !cafeAmbienceAudio.current.paused ? 'Pause Lofi' : 'Play Lofi'}
+            {playingAudio === cafeAmbienceAudio &&
+            !cafeAmbienceAudio.current.paused
+              ? "Pause Lofi"
+              : "Play Lofi"}
           </button>
         </div>
         {showPomodoro && (
@@ -141,12 +144,12 @@ function Home() {
             <PomodoroTimer initialTime={pomodoroTime} />
           </div>
         )}
-        <div className="absolute bottom-5 w-full text-center">
-          <Link
-            to="/Whiteboards"
-            className="text-xl text-white font-bold hover:text-blue-300"
-          >
-            Click here to enter
+        <div className="absolute bottom-5 opacity-100 transition-opacity bg-white px-7 py-3 rounded-full text-xl text-black font-bold">
+          <Link to="/Whiteboards">
+            <span className="flex items-center justify-center gap-x-1 translate-x-1">
+              See your boards
+              <HiMiniArrowUpRight className="size-6" />
+            </span>
           </Link>
         </div>
       </div>
