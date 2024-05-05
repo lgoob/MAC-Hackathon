@@ -4,10 +4,11 @@ import Whiteboards from "./pages/Whiteboards";
 import Whiteboard from "./pages/Whiteboard";
 import Corkboard from "./components/Corkboard"; // Make sure the path is correct
 import StickyNotesPage from "./pages/StickyNotesPage";
+import { PomodoroProvider } from "./contexts/PomodoroContext";
 
 function App() {
   return (
-    <>
+    <PomodoroProvider>
       <div>
         <Router>
           <Routes>
@@ -20,7 +21,7 @@ function App() {
           </Routes>
         </Router>
       </div>
-    </>
+    </PomodoroProvider>
   );
 }
 
