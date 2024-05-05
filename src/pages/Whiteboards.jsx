@@ -49,16 +49,26 @@ function Whiteboards() {
     }
   };
 
+
   const clearWhiteboard = () => {
     const whiteboardIdToRemove = prompt("Enter the name of the whiteboard to remove:");
     if (whiteboardIdToRemove) {
-      // Filter out the whiteboard to remove
-      const updatedWhiteboards = whiteboards.filter((board) => board.id !== whiteboardIdToRemove);
-      setWhiteboards(updatedWhiteboards);
-      // Also remove data from localStorage
-      localStorage.removeItem(`whiteboard_${whiteboardIdToRemove}`);
+        // Filter out the whiteboard to remove
+        const updatedWhiteboards = whiteboards.filter((board) => board.id !== whiteboardIdToRemove);
+        if (updatedWhiteboards.length === whiteboards.length) {
+            // If the length of updatedWhiteboards is the same as the original array,
+            // it means the whiteboard with the given name was not found
+            alert("No whiteboard found with the specified name.");
+        } else {
+            // Otherwise, the whiteboard was successfully removed
+            setWhiteboards(updatedWhiteboards);
+            // Also remove data from localStorage
+            localStorage.removeItem(`whiteboard_${whiteboardIdToRemove}`);
+            alert("Whiteboard successfully removed.");
+        }
     }
-  };
+};
+
 
   const openAddWhiteboardModal = () => {
     setShowAddWhiteboardModal(true);
