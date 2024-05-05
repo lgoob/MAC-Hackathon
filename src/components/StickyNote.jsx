@@ -176,7 +176,7 @@ function StickyNote({ onClose, type, id }) {
   return (
 
     <div className="absolute size-140 bg-yellow-100 rounded-xl shadow-xl w-96" ref={stickyNoteRef} onMouseDown={handleMouseDown} style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
-      <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg cursor-move">
+      <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg">
         <input
           className="text-xl font-semibold bg-transparent focus:outline-none"
           placeholder="Enter title..."
@@ -195,7 +195,6 @@ function StickyNote({ onClose, type, id }) {
               key={task.id}
               className="flex items-center my-3 hover:bg-yellow-200 transition-all py-2 px-4 rounded-xl"
             >
-              <label className="inline-flex items-center flex-1">
                 <input
                   type="checkbox"
                   checked={task.completed}
@@ -209,17 +208,20 @@ function StickyNote({ onClose, type, id }) {
                     onChange={handleInputChange}
                     onBlur={finishEditingTask}
                     className="flex-1 ml-2 text-lg bg-transparent focus:outline-none"
+                    style={{cursor:'text'}}
+                    autoFocus
                   />
                 ) : (
                   <span
-                    style={{ textDecoration: task.completed ? "line-through" : "none" }}
+                    style={{ textDecoration: task.completed ? "line-through" : "none", cursor:'text'}}
                     onClick={() => startEditingTask(task.id)}
                     className="flex-1 ml-2 text-lg cursor-pointer"
                   >
-                    {task.text}
+                  {task.text || 'Edit Task'}
+
                   </span>
                 )}
-              </label>
+              
               <button
                 className="text-red-400 hover:text-red-500 transition-all focus:outline-none ml-2"
                 onClick={() => removeTask(task.id)}
