@@ -63,12 +63,12 @@ const Corkboard = () => {
   };
 
   return (
-    <div className="bg-yellow-900 p-4 w-full h-screen rounded-xl">
+    <div className="bg-yellow-900 p-6 w-full h-full rounded-xl">
       <h1 className="text-3xl font-bold font-serif text-white opacity-50 text-center">
         Pins
       </h1>
 
-      <div className="grid grid-cols-2 grid-rows-4 h-full gap-x-4">
+      <div className="grid grid-cols-2 grid-rows-4 h-full gap-x-8">
         {widgets.map((widget, index) => (
           <div
             key={index}

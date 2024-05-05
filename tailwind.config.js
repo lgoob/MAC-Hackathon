@@ -8,7 +8,7 @@ module.exports = {
 
         'hero': "url('./pictures/Cafe (Night).jpg')",
         'whiteboards': "url('./pictures/whiteboardsbackground.png')",
-        whiteboard: "url('./pictures/Whiteboard_Background.jpg')",
+        'whiteboard': "url('./pictures/Whiteboard_Background.jpg')",
 
       },
     },

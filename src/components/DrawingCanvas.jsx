@@ -81,12 +81,14 @@ const DrawingCanvas = ({ color, strokes, setStrokes, id }) => {
         ref={canvasRef}
         className="border-4 border-stone-300 rounded-2xl"
       ></canvas>
+      <div className="align-left">
       <button
         onClick={clearCanvas}
         className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 mt-2 rounded"
       >
         Clear Canvas
       </button>
+      </div>
     </div>
   );
 };

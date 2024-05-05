@@ -33,7 +33,7 @@ function Whiteboard() {
   }, [strokes, id]);
 
   return (
-    <div className="min-h-screen min-w-screen flex flex-col items-center relative">
+    <div className="bg-whiteboard min-h-screen min-w-screen flex flex-col items-center relative">
       <Link to="/whiteboards" className="absolute top-4 left-4">
         <button className="text-black hover:underline font-bold py-2 px-4 rounded-lg">
           <span className="flex items-center gap-x-2">
@@ -48,7 +48,7 @@ function Whiteboard() {
       </h1>
 
       <div className="flex flex-row gap-x-5 w-full h-[calc(100vh-8rem)] mt-5">
-        <div className="w-9/12 h-full self-start ml-5 relative">
+        <div className="w-9/12 h-full self-start ml-5 relative ">
           <DrawingCanvas
             color={color}
             strokes={strokes}
@@ -57,14 +57,17 @@ function Whiteboard() {
           />
           <div className="absolute top-0 left-0">
             <StickyNotesPage />
+            <div className='align-left'><Pens setColor={setColor} /></div>
           </div>
         </div>
-        <div className="w-3/12 h-full self-end mr-5">
+        <div className="w-3/12 h-full mr-5">
           <Corkboard />
+          
         </div>
       </div>
-      <Pens setColor={setColor} />
+      
     </div>
+    
   );
 }
 
