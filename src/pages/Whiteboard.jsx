@@ -31,7 +31,7 @@ function Whiteboard() {
   }, [strokes, id]);
 
   return (
-    <div className="bg-whiteboard bg-cover bg-center bg-no-repeat h-screen w-full flex flex-col items-center">
+    <div className="bg-whiteboard bg-cover bg-center bg-no-repeat min-h-screen w-full flex flex-col items-center">
       <PomodoroTimer />
       <h1 className="mt-4 text-xl font-bold text-center bg-blue-200 p-2 rounded-lg">
         Create your masterpiece: {id}
