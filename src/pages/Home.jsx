@@ -12,6 +12,7 @@ function Home() {
   const [showPomodoro, setShowPomodoro] = useState(false);
   const [pomodoroTime, setPomodoroTime] = useState(1500); // 25 minutes
   const [playingAudio, setPlayingAudio] = useState(null); // Track the currently playing audio
+  const [isPlaying, setIsPlaying] = useState(false); // Track if audio is playing or paused
 
   const backgroundJazzAudio = useRef(new Audio(backgroundJazz));
   const cafeAmbienceAudio = useRef(new Audio(seaRoad));
@@ -24,23 +25,35 @@ function Home() {
 
   const togglePomodoro = () => setShowPomodoro(!showPomodoro);
 
-  const toggleAudio = (audioRef) => {
+
+  const handleAudioToggle = (audioRef) => {
     if (playingAudio && playingAudio !== audioRef) {
+      // Pause any other playing audio
       playingAudio.current.pause();
-      playingAudio.current.currentTime = 0;
-    }
-    if (playingAudio === audioRef) {
-      audioRef.current.pause();
-      audioRef.current.currentTime = 0;
+      playingAudio.current.currentTime = playingAudio.current.currentTime; // Maintain current time
       setPlayingAudio(null);
+      setIsPlaying(false);
+    }
+
+    if (playingAudio === audioRef) {
+      // Toggle the current audio
+      if (!audioRef.current.paused) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(true);
+      }
     } else {
+      // No audio is playing, or a different audio was paused, start the new audio
       audioRef.current.play();
       setPlayingAudio(audioRef);
+      setIsPlaying(true);
     }
   };
 
   return (
-    <div className="bg-hero bg-cover bg-center bg-no repeat h-screen w-full">
+    <div className="bg-hero bg-cover bg-center bg-no-repeat h-screen w-full">
       <div className="flex flex-col items-center justify-center h-screen">
         <div className="absolute top-0 left-0 p-4">
           <img
@@ -54,7 +67,8 @@ function Home() {
         </div>
         <Clock />
         <div className="fixed bottom-20 right-20 space-x-4">
-          <button
+          
+        <button
             type="button"
             className="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-black dark:hover:bg-black dark:focus:ring-white"
             onClick={togglePomodoro}
@@ -104,19 +118,20 @@ function Home() {
             </svg>
             <span className="sr-only">Pomodoro</span>
           </button>
+          
           <button
             type="button"
             className="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-black dark:hover:bg-black dark:focus:ring-white"
-            onClick={() => toggleAudio(backgroundJazzAudio)}
+            onClick={() => handleAudioToggle(backgroundJazzAudio)}
           >
-            <span>Smooth Jazz</span>
+            {playingAudio === backgroundJazzAudio && !backgroundJazzAudio.current.paused ? 'Pause Jazz' : 'Play Jazz'}
           </button>
           <button
             type="button"
             className="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-black dark:hover:bg-black dark:focus:ring-white"
-            onClick={() => toggleAudio(cafeAmbienceAudio)}
+            onClick={() => handleAudioToggle(cafeAmbienceAudio)}
           >
-            <span>Lofi</span>
+            {playingAudio === cafeAmbienceAudio && !cafeAmbienceAudio.current.paused ? 'Pause Lofi' : 'Play Lofi'}
           </button>
         </div>
         {showPomodoro && (
