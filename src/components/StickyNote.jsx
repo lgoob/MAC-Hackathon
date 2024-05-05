@@ -175,7 +175,7 @@ function StickyNote({ onClose, type, id }) {
 
   return (
 
-    <div className="absolute size-120 bg-yellow-100 rounded-xl shadow-xl w-96" ref={stickyNoteRef} onMouseDown={handleMouseDown} style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
+    <div className="absolute size-140 bg-yellow-100 rounded-xl shadow-xl w-96" ref={stickyNoteRef} onMouseDown={handleMouseDown} style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
       <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg cursor-move">
         <input
           className="text-xl font-semibold bg-transparent focus:outline-none"

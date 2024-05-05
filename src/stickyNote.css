@@ -58,3 +58,13 @@
 .close:hover {
     background-color: #e0e27b;
 }
+
+.size-140 {
+    height: 400px; /* Adjust this value as needed */
+    overflow: hidden;
+  }
+  
+  .textarea-custom {
+    height: calc(100% - 40px); /* Adjust height to account for padding and other elements */
+  }
+  
