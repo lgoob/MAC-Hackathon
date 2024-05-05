@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import WhiteboardTile from "../components/WhiteboardTile";
 import { Link } from "react-router-dom";
+import PomodoroTimer from '../components/PomodoroTimer';
 
 function Whiteboards() {
   const [whiteboards, setWhiteboards] = useState([]);
@@ -98,7 +99,7 @@ function Whiteboards() {
           <span>Lock in</span>
         </button>
       </Link>
-
+      <PomodoroTimer />
       {/* Content when there are no whiteboards */}
       {whiteboards.length === 0 ? (
         <div className="flex flex-col items-center justify-center h-screen w-full">
