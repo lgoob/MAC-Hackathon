@@ -3,8 +3,6 @@ import DrawingCanvas from "../components/DrawingCanvas";
 import Pens from "../components/Utility Bar/Pens";
 import { useParams, Link } from "react-router-dom";
 import StickyNotesPage from "./StickyNotesPage";
-import Corkboard from "../components/Corkboard";
-import { IoIosArrowBack } from "react-icons/io";
 import PomodoroTimer from "../components/PomodoroTimer";
 
 function Whiteboard() {
@@ -33,37 +31,31 @@ function Whiteboard() {
   }, [strokes, id]);
 
   return (
-    <div className="min-h-screen min-w-screen flex flex-col items-center relative">
-      <Link to="/whiteboards" className="absolute top-4 left-4">
-        <button className="text-black hover:underline font-bold py-2 px-4 rounded-lg">
-          <span className="flex items-center gap-x-2">
-            <IoIosArrowBack />
-            Return to boards
-          </span>
-        </button>
-      </Link>
-
-      <h1 className="mt-4 text-xl font-bold text-center bg-blue-100 px-20 py-2 rounded-lg">
-        {id}
+    <div className="bg-whiteboard bg-cover bg-center bg-no-repeat min-h-screen w-full flex flex-col items-center">
+      <PomodoroTimer />
+      <h1 className="mt-4 text-xl font-bold text-center bg-blue-200 p-2 rounded-lg">
+        Create your masterpiece: {id}
       </h1>
-
-      <div className="flex flex-row gap-x-5 w-full h-[calc(100vh-8rem)] mt-5">
-        <div className="w-9/12 h-full self-start ml-5 relative">
+      <div className="flex flex-row">
+        <div class="bottom-0">
+          <Pens setColor={setColor} />
           <DrawingCanvas
             color={color}
             strokes={strokes}
             setStrokes={setStrokes}
             id={id}
           />
-          <div className="absolute top-0 left-0">
-            <StickyNotesPage />
-          </div>
+          <div className="flex justify-center mt-2 "></div>
         </div>
-        <div className="w-3/12 h-full self-end mr-5">
-          <Corkboard />
+        <div className="ml-4">
+          <StickyNotesPage />
         </div>
       </div>
-      <Pens setColor={setColor} />
+      <Link to="/whiteboards" className="mt-4">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Return to boards
+        </button>
+      </Link>
     </div>
   );
 }
