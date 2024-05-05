@@ -1,11 +1,29 @@
-import { useState, useRef } from "react";
+import { useState, useRef,useEffect } from "react";
 import "../stickyNote.css";
 import { IoClose } from "react-icons/io5";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-function StickyNote({ onClose, type }) {
+function StickyNote({ onClose, type, id }) {
   // Get a reference to a sticky note
   const stickyNoteRef = useRef();
+  
+
+  useEffect(() => {
+    const savedPosition = JSON.parse(localStorage.getItem(`stickyNote_${id}_position`));
+    if (savedPosition) {
+      stickyNoteRef.current.style.left = savedPosition.left;
+      stickyNoteRef.current.style.top = savedPosition.top;
+    }
+  }, [id]);
+
+  const [title, setTitle] = useState(() => {
+    return localStorage.getItem(`stickyNote_${id}_title`) || "";
+  });
+
+  const [text, setText] = useState(() => {
+    return localStorage.getItem(`stickyNote_${id}_text`) || "";
+  });
+  
   // Create states for moving a sticky note and its current coordinates
   const [allowMove, setAllowMove] = useState(false);
 
@@ -13,11 +31,18 @@ function StickyNote({ onClose, type }) {
   const [dy, setDy] = useState(0);
 
   // Initialize tasks with an array of default tasks
-  const [tasks, setTasks] = useState([
-    { id: 1, text: "Task 1", completed: false },
-    { id: 2, text: "Task 2", completed: false },
-    { id: 3, text: "Task 3", completed: false },
-  ]);
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem(`stickyNote_${id}_tasks`);
+    return savedTasks ? JSON.parse(savedTasks) : [
+      { id: 1, text: "Task 1", completed: false },
+      { id: 2, text: "Task 2", completed: false },
+      { id: 3, text: "Task 3", completed: false }
+    ];
+  });
+  
+  useEffect(() => {
+    localStorage.setItem(`stickyNote_${id}_tasks`, JSON.stringify(tasks));
+  }, [tasks]);
 
   // State for the task currently being edited
   const [editingTaskId, setEditingTaskId] = useState(null);
@@ -43,6 +68,17 @@ function StickyNote({ onClose, type }) {
   // Function to handle mouse up event
   function handleMouseUp() {
     setAllowMove(false);
+    const position = {
+      left: stickyNoteRef.current.style.left,
+      top: stickyNoteRef.current.style.top
+    };
+    localStorage.setItem(`stickyNote_${id}_position`, JSON.stringify(position));
+  }
+
+  function handleTitleChange(e) {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    localStorage.setItem(`stickyNote_${id}_title`, newTitle);
   }
 
   // Function to toggle task completion
@@ -62,6 +98,12 @@ function StickyNote({ onClose, type }) {
   // Function to handle starting task editing
   function startEditingTask(taskId) {
     setEditingTaskId(taskId);
+  }
+
+  function handleTextChange(e) {
+    const newText = e.target.value;
+    setText(newText);
+    localStorage.setItem(`stickyNote_${id}_text`, newText);
   }
 
   // Function to handle input change during task editing
@@ -92,9 +134,11 @@ function StickyNote({ onClose, type }) {
         onMouseUp={handleMouseUp}
       >
         <input
-          className="text-xl font-semibold bg-transparent focus:outline-none"
-          placeholder="Enter title..."
-        />
+  className="text-xl font-semibold bg-transparent focus:outline-none"
+  placeholder="Enter title..."
+  value={title}
+  onChange={handleTitleChange}
+/>
         <div className="text-lg font-bold cursor-pointer" onClick={onClose}>
           <IoClose className="size-6" />
         </div>
@@ -145,9 +189,11 @@ function StickyNote({ onClose, type }) {
       )}
       {type === "freeText" && (
         <textarea
-          placeholder="Enter text here"
-          className="p-2 h-40 text-sm resize-none outline-none bg-transparent"
-        ></textarea>
+        placeholder="Enter text here"
+        className="p-2 h-40 text-sm resize-none outline-none bg-transparent"
+        value={text}
+        onChange={handleTextChange}
+      ></textarea>
       )}
     </div>
   );
