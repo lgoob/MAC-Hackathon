@@ -2,19 +2,24 @@ import React, { useState, useEffect } from "react";
 import "./tailwind.css";
 import Sample from "../pictures/sample_image.jpeg";
 import { HiOutlinePlusCircle } from "react-icons/hi";
-import { FaRegTrashAlt } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
+import WidgetSelector from "./WidgetSelector";
 
 const widgetOptions = [
-  { id: 1, image: Sample },
-  { id: 2, image: Sample },
-  { id: 3, image: Sample },
+  { id: 1, image: Sample, colSpan: 1 },
+  { id: 2, image: Sample, colSpan: 1 },
+  { id: 3, image: Sample, colSpan: 2 },
+  { id: 4, image: Sample, colSpan: 2 },
 ];
 
 const Corkboard = () => {
   const [widgets, setWidgets] = useState(() => {
     const savedWidgets = localStorage.getItem("widgets");
-    return savedWidgets ? JSON.parse(savedWidgets) : Array(3).fill(null);
+    if (savedWidgets) {
+      return JSON.parse(savedWidgets);
+    } else {
+      return [{ colSpan: 1 }, { colSpan: 2 }];
+    }
   });
   const [showSelector, setShowSelector] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
@@ -38,27 +43,47 @@ const Corkboard = () => {
   const deleteWidget = (index) => {
     const newWidgets = [...widgets];
     newWidgets[index] = null;
+    if (!newWidgets.some((widget) => widget?.image)) {
+      newWidgets.length = 4;
+      newWidgets[0] = { colSpan: 1 };
+      newWidgets[1] = { colSpan: 1 };
+      newWidgets[2] = { colSpan: 2 };
+      newWidgets[3] = { colSpan: 2 };
+    }
     setWidgets(newWidgets);
   };
 
+  const NewWidgetButton = () => {
+    return (
+      <div className="flex flex-col items-center justify-center h-full col-span-1">
+        <HiOutlinePlusCircle className="text-yellow-900 h-10 w-10" />
+        <p className="text-yellow-900">New widget</p>
+      </div>
+    );
+  };
+
   return (
-    <div className="bg-yellow-900 p-4 w-96 h-screen">
+    <div className="bg-yellow-900 p-4 w-96 h-screen m-5 rounded-xl">
+      <h1 className="text-3xl font-bold font-serif text-white opacity-50 text-center">
+        Pins
+      </h1>
+
       <div className="grid grid-cols-2 grid-rows-4 h-full gap-x-4">
         {widgets.map((widget, index) => (
           <div
             key={index}
-            className={`bg-yellow-50 rounded-xl shadow-lg cursor-pointer relative ${
-              index === 2
+            className={`bg-yellow-50 rounded-xl shadow-lg cursor-pointer relative self-center row-span-1 ${
+              widget?.colSpan == 2
                 ? "col-span-2 aspect-video"
-                : "col-span-1 row-span-1 aspect-square"
+                : "col-span-1 aspect-square"
             } ${
-              widget
+              widget && widget.image
                 ? "opacity-100"
                 : "opacity-50 hover:opacity-75 transition-all"
             }`}
             onClick={() => openWidgetSelector(index)}
           >
-            {widget ? (
+            {widget && widget.image ? (
               <div className="absolute inset-0">
                 <img
                   src={widget.image}
@@ -66,7 +91,7 @@ const Corkboard = () => {
                   className="w-full h-full object-cover rounded-xl"
                 />
                 <IoClose
-                  className="absolute top-2 size-8 right-2 text-red-700 bg-white border-2 border-yellow-900 rounded-full transition-all p-1 rounded-2xl cursor-pointer"
+                  className="absolute top-2 size-8 right-2 text-red-700 bg-white border-2 border-yellow-900 rounded-full transition-all p-1 cursor-pointer"
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteWidget(index);
@@ -74,41 +99,17 @@ const Corkboard = () => {
                 />
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-full">
-                <HiOutlinePlusCircle className="text-yellow-900 h-10 w-10" />
-                <p className="text-yellow-900">New widget</p>
-              </div>
+              <NewWidgetButton />
             )}
           </div>
         ))}
       </div>
       {showSelector && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white p-4 rounded-lg shadow-md w-1/2">
-            <h4 className="text-lg font-bold mb-4">Select a Widget</h4>
-            <div className="grid grid-cols-3 gap-4">
-              {widgetOptions.map((option) => (
-                <div
-                  key={option.id}
-                  className="bg-white rounded-lg shadow-lg border-t-1 p-4 w-48"
-                  onClick={() => addWidget(option)}
-                >
-                  <img
-                    src={option.image}
-                    alt={`Select ${option.id}`}
-                    className="w-full h-auto"
-                  />
-                </div>
-              ))}
-            </div>
-            <button
-              className="mt-4 bg-gray-200 text-gray-700 px-4 py-2 rounded"
-              onClick={() => setShowSelector(false)}
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <WidgetSelector
+          widgetOptions={widgetOptions}
+          addWidget={addWidget}
+          onClose={() => setShowSelector(false)}
+        />
       )}
     </div>
   );
