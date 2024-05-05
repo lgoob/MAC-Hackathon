@@ -1,6 +1,6 @@
 # Infinite Loop: Cafe Vibes Productivity Tool: Focus Hour
 
-Welcome to the Focus Hour! This website combines simulates a relaxing cafe atmosphere with different productivity features such as a timer for periods of focused work, music (jazz or lofi), and different whiteboards along with drawing and sticky notes options to keep track of your studies and daily lives.  
+Welcome to Focus Hour! This website combines simulates a relaxing cafe atmosphere with different productivity features such as a timer for periods of focused work, music (jazz or lofi), and different whiteboards along with drawing and sticky notes options to keep track of your studies and daily lives.  
 This website has limitations in regards to what a user can do specifically in order to encourage them to LOCK IN and prioritize their tasks.  
 
 ## Features
