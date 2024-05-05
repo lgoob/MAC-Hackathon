@@ -33,7 +33,9 @@ function StickyNote({ onClose, type, id }) {
     return savedTasks ? JSON.parse(savedTasks) : [
       { id: 1, text: "Task 1", completed: false },
       { id: 2, text: "Task 2", completed: false },
-      { id: 3, text: "Task 3", completed: false }
+      { id: 3, text: "Task 3", completed: false },
+      { id: 4, text: "Task 4", completed: false },
+      { id: 5, text: "Task 5", completed: false }
     ];
   });
 
@@ -106,17 +108,48 @@ function StickyNote({ onClose, type, id }) {
     setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
   }
 
+  function addTask() {
+    // Generate a unique ID for the new task
+    const newTaskId = Date.now();
+
+    // Create a new task object with the new task ID, empty text, and completed status as false
+    const newTask = {
+        id: newTaskId,
+        text: "",
+        completed: false,
+    };
+
+    // Add the new task to the tasks state
+    setTasks((prevTasks) => {
+        const updatedTasks = [...prevTasks, newTask];
+        // Update local storage with the new tasks array
+        localStorage.setItem(`stickyNote_${id}_tasks`, JSON.stringify(updatedTasks));
+        return updatedTasks;
+    });
+
+    // Set the new task as the one being edited
+    setEditingTaskId(newTaskId);
+}
+
+
   function startEditingTask(taskId) {
     setEditingTaskId(taskId);
   }
 
   function handleInputChange(e) {
     const newValue = e.target.value;
-    setTasks((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === editingTaskId ? { ...task, text: newValue } : task
-      )
-    );
+    if (newValue.length > 25) {
+      // If the new task exceeds 25 characters, notify the user
+      alert("Task length cannot exceed 25 characters. Please enter a shorter task.");
+    }
+    else {
+      setTasks((prevTasks) =>
+        prevTasks.map((task) =>
+          task.id === editingTaskId ? { ...task, text: newValue } : task
+        )
+      );
+    }
+    
   }
 
   function finishEditingTask() {
@@ -124,7 +157,7 @@ function StickyNote({ onClose, type, id }) {
   }
 
   return (
-    <div className="fixed size-80 bg-yellow-100 rounded-xl shadow-xl" ref={stickyNoteRef}>
+    <div className="fixed size-120 bg-yellow-100 rounded-xl shadow-xl w-96" ref={stickyNoteRef}>
       <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg cursor-move"
         onMouseDown={handleMouseDown} onMouseMove={handleMouseMove} onMouseUp={handleMouseUp}>
         <input
@@ -177,6 +210,13 @@ function StickyNote({ onClose, type, id }) {
               </button>
             </div>
           ))}
+
+          {tasks.length < 5 && (
+            <div>
+              <button type="button" onClick={addTask} class="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Add Task</button>
+            </div>
+          )}
+
         </div>
       )}
       {type === "freeText" && (
