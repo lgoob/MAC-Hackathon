@@ -5,12 +5,11 @@ import { useParams, Link } from "react-router-dom";
 import StickyNotesPage from "./StickyNotesPage";
 
 function Whiteboard() {
-  const { id } = useParams(); {/* ID of current board*/}
-  const [color, setColor] = useState("black"); {/*Set initial colour to black - will revert on page refresh!*/}
-  const [strokes, setStrokes] = useState([]); {/*Set strokes for fetch from local*/}
+  const { id } = useParams();
+  const [color, setColor] = useState("black");
+  const [strokes, setStrokes] = useState([]);
 
   useEffect(() => {
-    {/* ID of boards*/}
     const savedStrokes = localStorage.getItem(`whiteboard_${id}`);
     if (savedStrokes) {
       try {
@@ -25,20 +24,36 @@ function Whiteboard() {
   }, [id]);
 
   useEffect(() => {
-    // Save strokes to localStorage when they change, but only after the initial load
     if (strokes.length > 0) {
       localStorage.setItem(`whiteboard_${id}`, JSON.stringify(strokes));
     }
   }, [strokes, id]);
 
   return (
-    <div>
-    
-      <h1>Create your masterpiece: {id}</h1>
-      <DrawingCanvas color={color} strokes={strokes} setStrokes={setStrokes} id={id} />
-      <Pens setColor={setColor} />
-      <Link to = "/whiteboards"><button>Return to boards</button></Link>
-      <StickyNotesPage />
+    <div className="bg-whiteboard bg-cover bg-center bg-no-repeat h-screen w-full flex flex-col items-center">
+      <h1 className="mt-4 text-xl font-bold text-center bg-blue-200 p-2 rounded-lg">
+        Create your masterpiece: {id}
+      </h1>
+      <div className="flex flex-row">
+        <div class="bottom-0">
+          <Pens setColor={setColor} />
+          <DrawingCanvas
+            color={color}
+            strokes={strokes}
+            setStrokes={setStrokes}
+            id={id}
+          />
+          <div className="flex justify-center mt-2 "></div>
+        </div>
+        <div className="ml-4">
+          <StickyNotesPage />
+        </div>
+      </div>
+      <Link to="/whiteboards" className="mt-4">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Return to boards
+        </button>
+      </Link>
     </div>
   );
 }
