@@ -85,23 +85,10 @@ function Whiteboards() {
     <div className="bg-whiteboards bg-cover bg-center bg-no-repeat min-h-screen w-full relative">
       {/* "Lock in" button in the top left corner */}
       <Link to="/">
-        <button
-          type="button"
-          className="absolute top-4 left-4 w-auto px-6 py-4 text-lg font-semibold text-gray-100 transition-colors duration-200 bg-gray-800 hover:bg-gray-900 border border-gray-700 rounded-lg flex items-center gap-x-3 cursor-pointer"
-        >
-          <svg
-            className="w-6 h-6 rtl:rotate-180"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"
-            />
+        <button type="button" className="absolute top-4 left-4 w-auto px-6 py-4 text-lg font-semibold text-gray-100 transition-colors duration-200 bg-gray-800 hover:bg-gray-900 border border-gray-700 rounded-lg flex items-center gap-x-3 cursor-pointer">
+          <svg className="w-6 h-6 rtl:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18"/>
           </svg>
           <span>Lock in</span>
         </button>
@@ -147,7 +134,7 @@ function Whiteboards() {
             </button>
           </div>
 
-          <div className="flex flex-wrap justify-center">
+          <div className="grid grid-cols-3 gap-4 justify-center">
             {whiteboards.map((board) => (
               <WhiteboardTile key={board.id} id={board.id} />
             ))}
