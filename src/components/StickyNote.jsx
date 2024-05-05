@@ -68,11 +68,19 @@ function StickyNote({ onClose, type, id }) {
     localStorage.setItem(`stickyNote_${id}_position`, JSON.stringify(position));
   }
 
+  
   function handleTitleChange(e) {
-    const newTitle = e.target.value;
-    setTitle(newTitle);
-    localStorage.setItem(`stickyNote_${id}_title`, newTitle);
+      const newTitle = e.target.value;
+      if (newTitle.length > 25) {
+          // If the new title exceeds 25 characters, notify the user
+          alert("Title cannot exceed 25 characters. Please enter a shorter title.");
+      } else {
+          // Otherwise, set the new title and update local storage
+          setTitle(newTitle);
+          localStorage.setItem(`stickyNote_${id}_title`, newTitle);
+      }
   }
+
 
   function handleTextChange(e) {
     const newText = e.target.value;
