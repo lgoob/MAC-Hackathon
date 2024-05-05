@@ -43,7 +43,6 @@ function StickyNote({ onClose, type, id }) {
     localStorage.setItem(`stickyNote_${id}_position`, JSON.stringify(position));
   };
 
-  // Add event listeners
   useEffect(() => {
     if (isDragging) {
       document.addEventListener("mousemove", handleMouseMove);
@@ -56,14 +55,12 @@ function StickyNote({ onClose, type, id }) {
     };
   }, [isDragging, offset]);
 
-  // Handling title and text
   const [title, setTitle] = useState(() => {
     return localStorage.getItem(`stickyNote_${id}_title`) || "";
   });
   const [text, setText] = useState(() => {
     return localStorage.getItem(`stickyNote_${id}_text`) || "";
   });
-  // Initialize tasks with an array of default tasks
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem(`stickyNote_${id}_tasks`);
     return savedTasks ? JSON.parse(savedTasks) : [
@@ -80,31 +77,22 @@ function StickyNote({ onClose, type, id }) {
   }, [tasks]);
 
   const [editingTaskId, setEditingTaskId] = useState(null);
-
-  
-
-  
-
-
-
+  const completedTasksCount = tasks.filter(task => task.completed).length;
+  const progress = (tasks.length === 0) ? 0 : (completedTasksCount / tasks.length) * 100;
 
   function handleTitleChange(e) {
       const newTitle = e.target.value;
       if (newTitle.length > 25) {
-          // If the new title exceeds 25 characters, notify the user
           alert("Title cannot exceed 25 characters. Please enter a shorter title.");
       } else {
-          // Otherwise, set the new title and update local storage
           setTitle(newTitle);
           localStorage.setItem(`stickyNote_${id}_title`, newTitle);
       }
   }
 
-
   function handleTextChange(e) {
     const newText = e.target.value;
     if (newText.length > 200) {
-      // If the new text exceeds 200 characters, notify the user
       alert("Text cannot exceed 200 characters. Please reduce your text.");
     }
     else {
@@ -126,28 +114,19 @@ function StickyNote({ onClose, type, id }) {
   }
 
   function addTask() {
-    // Generate a unique ID for the new task
     const newTaskId = Date.now();
-
-    // Create a new task object with the new task ID, empty text, and completed status as false
     const newTask = {
         id: newTaskId,
         text: "",
         completed: false,
     };
-
-    // Add the new task to the tasks state
     setTasks((prevTasks) => {
         const updatedTasks = [...prevTasks, newTask];
-        // Update local storage with the new tasks array
         localStorage.setItem(`stickyNote_${id}_tasks`, JSON.stringify(updatedTasks));
         return updatedTasks;
     });
-
-    // Set the new task as the one being edited
     setEditingTaskId(newTaskId);
-}
-
+  }
 
   function startEditingTask(taskId) {
     setEditingTaskId(taskId);
@@ -156,17 +135,14 @@ function StickyNote({ onClose, type, id }) {
   function handleInputChange(e) {
     const newValue = e.target.value;
     if (newValue.length > 25) {
-      // If the new task exceeds 25 characters, notify the user
       alert("Task length cannot exceed 25 characters. Please enter a shorter task.");
-    }
-    else {
+    } else {
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task.id === editingTaskId ? { ...task, text: newValue } : task
         )
       );
     }
-    
   }
 
   function finishEditingTask() {
@@ -174,17 +150,16 @@ function StickyNote({ onClose, type, id }) {
   }
 
   return (
-
     <div className="absolute size-140 bg-yellow-100 rounded-xl shadow-xl w-96" ref={stickyNoteRef} onMouseDown={handleMouseDown} style={{ cursor: isDragging ? 'grabbing' : 'grab' }}>
-      <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg cursor-move">
+      <div className="flex items-center justify-between p-2 bg-yellow-200 rounded-t-lg">
         <input
           className="text-xl font-semibold bg-transparent focus:outline-none"
           placeholder="Enter title..."
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleTitleChange}
           onBlur={() => localStorage.setItem(`stickyNote_${id}_title`, title)}
         />
-        <div className="text-lg font-bold cursor-pointer" onClick={onClose}>
+        <div class="text-lg font-bold cursor-pointer" onClick={onClose}>
           <IoClose />
         </div>
       </div>
@@ -195,7 +170,6 @@ function StickyNote({ onClose, type, id }) {
               key={task.id}
               className="flex items-center my-3 hover:bg-yellow-200 transition-all py-2 px-4 rounded-xl"
             >
-              <label className="inline-flex items-center flex-1">
                 <input
                   type="checkbox"
                   checked={task.completed}
@@ -209,17 +183,20 @@ function StickyNote({ onClose, type, id }) {
                     onChange={handleInputChange}
                     onBlur={finishEditingTask}
                     className="flex-1 ml-2 text-lg bg-transparent focus:outline-none"
+                    style={{cursor:'text'}}
+                    autoFocus
                   />
                 ) : (
                   <span
-                    style={{ textDecoration: task.completed ? "line-through" : "none" }}
+                    style={{ textDecoration: task.completed ? "line-through" : "none", cursor:'text'}}
                     onClick={() => startEditingTask(task.id)}
                     className="flex-1 ml-2 text-lg cursor-pointer"
                   >
-                    {task.text}
+                  {task.text || 'Edit Task'}
+
                   </span>
                 )}
-              </label>
+              
               <button
                 className="text-red-400 hover:text-red-500 transition-all focus:outline-none ml-2"
                 onClick={() => removeTask(task.id)}
@@ -228,19 +205,25 @@ function StickyNote({ onClose, type, id }) {
               </button>
             </div>
           ))}
-
           {tasks.length < 5 && (
             <div>
               <button type="button" onClick={addTask} class="focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:focus:ring-yellow-900">Add Task</button>
             </div>
           )}
-
+          <div className="relative bg-gray-200 rounded-full h-8 mb-2">
+            <div
+              className="bg-blue-600 h-8 rounded-full flex items-center justify-center text-white"
+              style={{ width: `${progress}%` }}
+            >
+              {Math.round(progress)}%
+            </div>
+          </div>
         </div>
       )}
       {type === "freeText" && (
        <textarea
           placeholder="Enter text here"
-          className="p-2 h-full text-sm w-full resize-none outline-none bg-transparent leading-10 tracking-wider"
+          className="p-6 h-full text-lg w-full resize-none outline-none bg-transparent leading-10 tracking-wider"
           value={text}
           onChange={handleTextChange}
         ></textarea>

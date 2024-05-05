@@ -5,6 +5,7 @@ import { useParams, Link } from "react-router-dom";
 import StickyNotesPage from "./StickyNotesPage";
 import Corkboard from "../components/Corkboard";
 import { IoIosArrowBack } from "react-icons/io";
+import PomodoroTimer from "../components/PomodoroTimer";
 
 function Whiteboard() {
   const { id } = useParams();
