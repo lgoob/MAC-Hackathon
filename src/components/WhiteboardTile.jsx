@@ -1,17 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { IoClose } from "react-icons/io5";
 
-//Tile Creation for Boards Page
-function WhiteboardTile({ id }) {
+function WhiteboardTile({ id, onDelete }) {
   return (
-    <Link to={`/whiteboards/${id}`}> 
-      <div className="flex items-center justify-center h-80 w-80 m-4 bg-gray-300 text-black font-bold rounded-lg shadow-lg hover:bg-gray-400 transition duration-200 ease-in-out text-xl">
-        <h2>{id}</h2> {/* ID of boards*/}
-      </div>
-    </Link>
+    <div className="relative w-80 h-80 m-4 rounded-lg shadow-lg bg-gray-300">
+      {/* Delete icon in the top right corner */}
+      <button
+        onClick={(e) => {
+          // Prevent the click event from bubbling up to the parent Link component
+          e.stopPropagation();
+          e.preventDefault();
+          // Call the onDelete function with the id of the whiteboard
+          onDelete(id);
+        }}
+        className="absolute top-2 right-2 text-black focus:outline-none"
+      >
+        <IoClose size={30} />
+      </button>
+      
+      <Link to={`/whiteboards/${id}`} className="w-full h-full flex items-center justify-center">
+        <div className="text-xl font-bold text-black">
+          <h2>{id}</h2>
+        </div>
+      </Link>
+    </div>
   );
 }
 
 export default WhiteboardTile;
-
-
