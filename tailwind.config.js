@@ -6,8 +6,11 @@ module.exports = {
   theme: {
     extend: {
       backgroundImage: {
-        hero: "url('./pictures/Cafe (Night).jpg')",
+
+        'hero': "url('./pictures/Cafe (Night).jpg')",
+        'whiteboards': "url('./pictures/whiteboardsbackground.png')"
         whiteboard: "url('./pictures/Whiteboard_Background.jpg')",
+
       },
     },
   },
