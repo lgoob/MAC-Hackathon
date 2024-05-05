@@ -52,6 +52,8 @@ function Home() {
     }
   };
 
+  
+
   return (
     <div className="bg-hero bg-cover bg-center bg-no-repeat h-screen w-full">
       <div className="flex flex-col items-center justify-center h-screen">
@@ -70,13 +72,13 @@ function Home() {
           
         <button
             type="button"
-            className="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-black dark:hover:bg-black dark:focus:ring-white"
+            className="relative inline-flex items-center p-10 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white opacity-40 dark:focus:ring-black"
             onClick={togglePomodoro}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="1em"
-              height="1em"
+              width="3em"
+              height="3em"
               viewBox="0 0 24 24"
             >
               <path
@@ -121,14 +123,14 @@ function Home() {
           
           <button
             type="button"
-            className="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-black dark:hover:bg-black dark:focus:ring-white"
+            className="opacity-60 relative inline-flex items-center p-3 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white dark:focus:ring-black"
             onClick={() => handleAudioToggle(backgroundJazzAudio)}
           >
             {playingAudio === backgroundJazzAudio && !backgroundJazzAudio.current.paused ? 'Pause Jazz' : 'Play Jazz'}
           </button>
           <button
             type="button"
-            className="relative inline-flex items-center p-3 text-sm font-medium text-center text-white bg-black rounded-lg hover:bg-black focus:ring-2 focus:outline-none focus:ring-blue-300 dark:bg-black dark:hover:bg-black dark:focus:ring-white"
+            className="opacity-60 relative inline-flex items-center p-3 text-sm font-medium text-center text-black bg-white rounded-lg hover:bg-white focus:ring-2 focus:outline-none dark:bg-white dark:hover:bg-white dark:focus:ring-black"
             onClick={() => handleAudioToggle(cafeAmbienceAudio)}
           >
             {playingAudio === cafeAmbienceAudio && !cafeAmbienceAudio.current.paused ? 'Pause Lofi' : 'Play Lofi'}
