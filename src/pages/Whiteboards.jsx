@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import WhiteboardTile from "../components/WhiteboardTile";
 import { Link } from 'react-router-dom';
-import { FaRegTrashAlt } from "react-icons/fa";
 
 function Whiteboards() {
   const [whiteboards, setWhiteboards] = useState([]);
@@ -50,24 +49,11 @@ function Whiteboards() {
   };
 
 
-  const clearWhiteboard = () => {
-    const whiteboardIdToRemove = prompt("Enter the name of the whiteboard to remove:");
-    if (whiteboardIdToRemove) {
-        // Filter out the whiteboard to remove
-        const updatedWhiteboards = whiteboards.filter((board) => board.id !== whiteboardIdToRemove);
-        if (updatedWhiteboards.length === whiteboards.length) {
-            // If the length of updatedWhiteboards is the same as the original array,
-            // it means the whiteboard with the given name was not found
-            alert("No whiteboard found with the specified name.");
-        } else {
-            // Otherwise, the whiteboard was successfully removed
-            setWhiteboards(updatedWhiteboards);
-            // Also remove data from localStorage
-            localStorage.removeItem(`whiteboard_${whiteboardIdToRemove}`);
-            alert("Whiteboard successfully removed.");
-        }
-    }
-};
+  const handleDeleteWhiteboard = (id) => {
+    const updatedWhiteboards = whiteboards.filter((board) => board.id !== id);
+    setWhiteboards(updatedWhiteboards);
+    localStorage.removeItem(`whiteboard_${id}`);
+  };
 
 
   const openAddWhiteboardModal = () => {
@@ -125,18 +111,11 @@ function Whiteboards() {
             >
               Add A Board +
             </button>
-            <button
-              onClick={clearWhiteboard}
-              className="flex items-center space-x-2 text-xl px-8 py-4 bg-amber-900 text-white font-bold rounded-lg shadow-lg hover:bg-amber-950 transition duration-200 ease-in-out"
-            >
-              <span>Delete A Board</span>
-              <FaRegTrashAlt />
-            </button>
           </div>
 
           <div className="grid grid-cols-3 gap-4 justify-center">
             {whiteboards.map((board) => (
-              <WhiteboardTile key={board.id} id={board.id} />
+              <WhiteboardTile key={board.id} id={board.id} onDelete={handleDeleteWhiteboard}/>
             ))}
           </div>
         </div>
